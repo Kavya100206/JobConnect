@@ -17,12 +17,12 @@ JobConnect offers distinct, role-specific features powered by secure **JWT-based
 
 This central hub gives recruiters complete control over their hiring process.
 
-* **Job Listing Management:** Post, edit, and manage all active and past job listings.
+* **Job Listing Management:** Post, edit, and delete all active job listings.
 * **Performance Metrics:** View essential hiring statistics at a glance, including:
     * **Total Jobs Posted:** Count of all active and closed listings.
     * **Total Applicants:** Cumulative number of applications received across all jobs.
     * **Pending Applications:** Applications that are yet to be reviewed.
-* **Profile Management:** Edit and update company/recruiter profile information, including contact details and company overview.
+* **Profile Management:** Edit and update company/recruiter profile information.
 
 ---
 
@@ -30,9 +30,9 @@ This central hub gives recruiters complete control over their hiring process.
 
 The applicant dashboard is designed for a smooth and effective job search.
 
-* **Job Discovery:** Browse and explore a curated list of **recommended jobs** based on profile details and past interactions.
-* **Application Tracking (My Jobs):** Monitor the status of all submitted job applications (e.g., Pending Review, Interview Scheduled) in a dedicated section.
-* **Profile Management:** Update and maintain an applicant profile, including resume uploads, professional experience, and skills, to enhance job matching and application quality.
+* **Job Discovery:** Browse and explore a curated list of recommended jobs that match your skills, with an Apply button to add them to your My Jobs list.
+* **Application Tracking (My Jobs):** Display all the jobs the applicant has applied to in a dedicated section.
+* **Profile Management:** Update and maintain an applicant profile, including resume uploads and skills, to enhance job matching and application quality.
 
 ---
 
@@ -63,23 +63,23 @@ The applicant dashboard is designed for a smooth and effective job search.
 
 JobConnect/
 │
-├── backend/
-│   ├── controllers/      \# Handles request logic (job posting, user stats, etc.)
-│   ├── models/           \# Mongoose schemas (User, Job, Application)
-│   ├── routes/           \# API endpoint definitions
-│   ├── server.js         \# Main server file
-│   └── config/           \# Database configuration
+├── server/
+│   ├── middlewares/
+│   ├── controllers/      
+│   ├── models/           
+│   ├── routes/           
+│   ├── index.js         \# Main server file
+│   ├── config/           
 │
-├── frontend/
+├── client/
 │   ├── src/
-│   │   ├── components/   \# Reusable UI elements
-│   │   ├── pages/        \# Main application views (Dashboard, Login, Apply)
-│   │   ├── redux/        \# Redux slices for global state
-│   │   ├── apiCalls/     \# Axios configurations and API service functions
+│   │   ├── components/   
+│   │   ├── pages/        
+│   │   ├── redux/        
+│   │   ├── apiCalls/     
 │   │   ├── App.jsx       \# Main component and router
 │   │   └── main.jsx      \# Entry point
-│   └── package.json
-│
+│ 
 └── README.md
 
 ````
@@ -93,7 +93,7 @@ JobConnect/
 1.  **Clone the repository:**
     ```bash
     git clone [https://github.com/your-username/JobConnect.git](https://github.com/your-username/JobConnect.git)
-    cd JobConnect/backend
+    cd JobConnect/server
     ```
 
 2.  **Install dependencies:**
@@ -104,9 +104,8 @@ JobConnect/
 3.  **Configure Environment Variables:**
     Create a file named `.env` in the `/backend` directory with the following variables:
     ```env
-    MONGO_URI=your_mongodb_connection_string
+    dbURL=your_mongodb_connection_string
     JWT_SECRET=your_secret_key
-    PORT=8000
     ```
 
 4.  **Start the server:**
@@ -121,7 +120,7 @@ JobConnect/
 
 1.  **Navigate to frontend folder:**
     ```bash
-    cd ../frontend
+    cd ../client
     ```
 
 2.  **Install dependencies:**
@@ -130,9 +129,9 @@ JobConnect/
     ```
 
 3.  **Configure API URL:**
-    Create a file named `.env` in the `/frontend` directory with your backend API URL:
-    ```env
-    VITE_API_URL=http://localhost:8000
+    Create a file named `config.js` in the `apiCalls/` folder with your backend API URL:
+    ```bash
+    API_BASE_URL=http://localhost:8000
     ```
 
 4.  **Start the development server:**
@@ -143,17 +142,35 @@ JobConnect/
 
 ---
 
+
+## Demo Users 🔑
+
+For testing and exploring the JobConnect platform, you can use the following demo accounts:
+
+### 👔 Recruiter
+- **Email:** bob@gmail.com
+- **Password:** 123456
+
+### 👩‍💻 Applicant
+- **Email:** kavya@gmail.com
+- **Password:** 123456
+
+---
+
+
 ## API Endpoints Overview 🧾
 
-| Method | Endpoint | Description | Requires Auth |
+| Method | Endpoint | Description | Role Required |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/signup` | Register a new user (Recruiter/Applicant) | No |
-| `POST` | `/api/auth/login` | Login for recruiter/applicant | No |
-| `POST` | `/api/recruiter/post` | Post a new job listing | Recruiter |
-| `PUT` | `/api/recruiter/update/:id` | Edit an existing job listing by ID | Recruiter |
-| `GET` | `/api/recruiter/getStats` | Fetch recruiter job/application statistics | Recruiter |
-| `GET` | `/api/jobs/recommended` | Get recommended jobs for applicants | Applicant |
-| `POST` | `/api/apply/:jobId` | Apply for a specific job by ID | Applicant |
+| `POST` | `/api/auth/signup` | Register a new user (Recruiter/Applicant). | No |
+| `POST` | `/api/auth/login` | Log in a user. | No |
+| `POST` | `/api/recruiter/post` | Post a new job listing. | Recruiter |
+| `PUT` | `/api/recruiter/update/:id` | Edit an existing job listing by ID. | Recruiter |
+| `DELETE` | `/api/recruiter/delete/:id` | Delete a job listing by ID. | Recruiter |
+| `GET` | `/api/recruiter/getStats` | Fetch recruiter job and application statistics. | Recruiter |
+| `GET` | `/api/jobs/recommended` | Get recommended jobs for the current applicant. | Applicant |
+| `POST` | `/api/apply/:jobId` | Apply for a specific job by ID. | Applicant |
+| `GET` | `/api/applicant/myJobs` | View all jobs previously applied to by the applicant. | Applicant |
 
 ---
 
