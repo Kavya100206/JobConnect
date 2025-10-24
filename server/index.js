@@ -19,7 +19,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-    origin: "https://job-connect-ten-tau.vercel.app/", // frontend url
+    origin: "https://job-connect-ten-tau.vercel.app", // frontend url
     credentials: true, //allow cookies to be sent
 }));
 app.use('/api/auth' , authRouter)
