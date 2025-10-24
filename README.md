@@ -110,7 +110,7 @@ JobConnect/
 
 4.  **Start the server:**
     ```bash
-    npm start
+    npm run dev
     ```
     The backend API will be running on **`http://localhost:8000`**.
 
