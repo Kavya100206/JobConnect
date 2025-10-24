@@ -85,6 +85,7 @@ export default function ApplicantDashboard() {
   };
 
   return (
+    <div className="overflow-x-hidden">
     <div className="flex h-screen bg-gray-50">
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader onLogout={handleLogout} />
@@ -107,11 +108,13 @@ export default function ApplicantDashboard() {
               </span>
             </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-110">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
               {recommended.map((job) => (
                 <div
                   key={job._id}
-                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col w-[380px] h-[400px]  "
+                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col  "
                 >
                   {/* Content (NO flex-grow here) */}
                   <div>
@@ -163,6 +166,7 @@ export default function ApplicantDashboard() {
                 </div>
               ))}
             </div>
+            
 
             <h1 className="flex items-center gap-3 my-9">
               <span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-blue-700 to-indigo-600" />
@@ -171,11 +175,11 @@ export default function ApplicantDashboard() {
               </span>
             </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-110">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {myJobs.map((job) => (
                 <div
                   key={job._id}
-                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col w-[380px] h-[400px]  "
+                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col  "
                 >
                   {/* Content (NO flex-grow here) */}
                   <div>
@@ -232,6 +236,7 @@ export default function ApplicantDashboard() {
 
         <DashboardFooter />
       </div>
+    </div>
     </div>
   );
 }

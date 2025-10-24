@@ -290,9 +290,9 @@ export default function RecruiterDashboard() {
                         }
                         className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       >
-                        <option value="Full-time">Full-time</option>
-                        <option value="Part-time">Part-time</option>
-                        <option value="Contract">Contract</option>
+                        <option value="full-time">full-time</option>
+                        <option value="part-time">part-time</option>
+                        <option value="contract">contract</option>
                       </select>
                     </div>
 
@@ -307,9 +307,10 @@ export default function RecruiterDashboard() {
                         }
                         className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       >
-                        <option value="Onsite">Onsite</option>
-                        <option value="Remote">Remote</option>
-                        <option value="Hybrid">Hybrid</option>
+                        <option value="onsite">Onsite</option>
+<option value="remote">Remote</option>
+<option value="hybrid">Hybrid</option>
+
                       </select>
                     </div>
 

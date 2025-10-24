@@ -221,7 +221,7 @@ export const getRecruiterStats = async (req, res) => {
       rejected
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
