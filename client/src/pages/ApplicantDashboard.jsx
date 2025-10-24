@@ -114,7 +114,7 @@ export default function ApplicantDashboard() {
               {recommended.map((job) => (
                 <div
                   key={job._id}
-                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col w-[360px]  "
+                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col w-full max-w-xl mx-auto  "
                 >
                   {/* Content (NO flex-grow here) */}
                   <div>
