@@ -91,7 +91,7 @@ export default function ApplicantDashboard() {
         <DashboardHeader onLogout={handleLogout} />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="w-full mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-4 py-8">
             {/* Welcome Section */}
             <div className="mb-8 animate-fade-in">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
@@ -114,7 +114,7 @@ export default function ApplicantDashboard() {
               {recommended.map((job) => (
                 <div
                   key={job._id}
-                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col w-full o  "
+                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col"
                 >
                   {/* Content (NO flex-grow here) */}
                   <div>
@@ -175,11 +175,11 @@ export default function ApplicantDashboard() {
               </span>
             </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {myJobs.map((job) => (
                 <div
                   key={job._id}
-                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col  "
+                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col w-full "
                 >
                   {/* Content (NO flex-grow here) */}
                   <div>
