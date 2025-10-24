@@ -70,8 +70,6 @@ export default function Login() {
           setProfileData({
             company: response.user.company,
             location: response.user.location,
-            workMode: response.user.workMode,
-            defaultJobType: response.user.defaultJobType,
           })
         );
       }

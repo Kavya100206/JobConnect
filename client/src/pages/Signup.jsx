@@ -15,8 +15,6 @@ export default function Signup() {
     resume: '',
     company: '',
     location: '',
-    workMode: '',
-    defaultJobType: '',
   })
   const [error, setError] = useState('')
 
@@ -35,7 +33,7 @@ export default function Signup() {
       return false
     }
     if (userType === 'recruiter' &&
-      (!formData.company || !formData.location || !formData.workMode || !formData.defaultJobType)) {
+      (!formData.company || !formData.location)) {
       setError('Please fill in all recruiter fields')
       return false
     }
@@ -67,8 +65,7 @@ export default function Signup() {
       role: formData.role,
       company: formData.company,
       location: formData.location,
-      workMode: formData.workMode,
-      defaultJobType: formData.defaultJobType
+
     };
   }
 
@@ -85,8 +82,6 @@ export default function Signup() {
       resume: '',
       company: '',
       location: '',
-      workMode: '',
-      defaultJobType: '',
     });
     setUserType(null);
 
@@ -248,28 +243,6 @@ export default function Signup() {
                   type="text"
                   id="location"
                   value={formData.location}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-900">Work Mode</label>
-                <input
-                  type="text"
-                  id="workMode"
-                  value={formData.workMode}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-900">Default Job Type</label>
-                <input
-                  type="text"
-                  id="defaultJobType"
-                  value={formData.defaultJobType}
                   onChange={handleInputChange}
                   className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 />

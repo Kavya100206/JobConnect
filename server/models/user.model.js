@@ -24,16 +24,6 @@ const applicantSchema = new mongoose.Schema({
 const recruiterSchema = new mongoose.Schema({
   company: { type: String, required: true },
   location: { type: String, required: true },
-  workMode: {
-    type: String,
-    enum: ["remote", "onsite", "hybrid"],
-    default: "onsite",
-  },
-  defaultJobType: {
-    type: String,
-    enum: ["full-time", "part-time", "contract"],
-    default: "full-time",
-  },
 });
 
 

@@ -14,8 +14,6 @@ export const signUp = async (req, res) => {
     resume,
     company,
     location,
-    workMode,
-    defaultJobType,
   } = req.body;
   try {
     //all fields are required
@@ -57,7 +55,8 @@ export const signUp = async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        z,
+        company,
+        location,
       });
     } else {
       return res.status(400).json({ message: "Invalid role" });
