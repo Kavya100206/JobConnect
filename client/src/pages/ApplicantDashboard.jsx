@@ -85,13 +85,13 @@ export default function ApplicantDashboard() {
   };
 
   return (
-    <div className="overflow-x-hidden">
-    <div className="flex h-screen bg-gray-50">
+    
+    <div className="flex h-screen bg-gray-50 overflow-x-hidden">
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader onLogout={handleLogout} />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-6xl mx-auto px-6 py-8">
+          <div className="w-full mx-auto px-6 py-8">
             {/* Welcome Section */}
             <div className="mb-8 animate-fade-in">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
@@ -236,7 +236,6 @@ export default function ApplicantDashboard() {
 
         <DashboardFooter />
       </div>
-    </div>
     </div>
   );
 }
