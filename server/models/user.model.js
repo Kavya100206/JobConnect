@@ -17,6 +17,16 @@ const userSchema = new mongoose.Schema(
 const applicantSchema = new mongoose.Schema({
   skills: { type: [String], required: true },
   resume: { type: String, required: true },
+  experience: {
+  type: Number, // in years
+  required: true
+},
+savedJobs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Job', // Reference to your Job model
+    },
+  ],
 });
 
 

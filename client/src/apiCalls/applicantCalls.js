@@ -51,3 +51,52 @@ export const getMyApplications = async() => {
     throw error.response.data;
   }
 }
+
+//withdraw application
+export const withdrawApplication = async(applicationId) => {
+  try {
+    const response = await api.delete(`api/applicant/withdraw/${applicationId}`); 
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  } 
+};
+
+
+
+// Save a job
+export const saveJob= async (jobId) => {
+  try {
+    const res = await api.post(
+      `/api/applicant/saveJob/${jobId}`
+    );
+    return res.data; // returns saved job object
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+// Unsave a job
+export const unsaveJob = async (jobId) => {
+  try {
+    const res = await api.delete(
+      `api/applicant/unsaveJob/${jobId}`,);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+// Get all saved jobs
+export const getSavedJobs = async () => {
+  try {
+    const res = await api.get(`api/applicant/savedJobs`);
+    return res.data.savedJobs;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+

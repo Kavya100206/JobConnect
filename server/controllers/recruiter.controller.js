@@ -9,6 +9,7 @@ export const createJob = async (req, res) => {
     title,
     description,
     skillsRequired,
+    minExperience,
     location,
     salary,
     jobType,
@@ -21,6 +22,7 @@ export const createJob = async (req, res) => {
       !title ||
       !description ||
       !skillsRequired ||
+      !minExperience||
       !location ||
       !salary ||
       !jobType ||
@@ -38,6 +40,7 @@ export const createJob = async (req, res) => {
       title,
       description,
       skillsRequired: skillsArray,
+      minExperience,
       location,
       salary,
       jobType,
@@ -97,63 +100,7 @@ export const deleteJob = async (req, res) => {
   }
 };
 
-//get all applicants for a job
-export const getJobApplications = async (req, res) => {
-  try {
-    const { jobId } = req.params;
 
-    //check if job exists
-    const job = await Job.findById(jobId);
-    if (!job) {
-      return res.status(404).json({ message: "Job not found" });
-    }
-
-    const applications = await Application.find({ job: jobId }).populate(
-      "applicant",
-      "name email skills resume"
-    );
-    res.status(200).json(applications);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-//update application status
-export const updateApplicationStatus = async (req, res) => {
-  try {
-    //confirming the user is a recruiter
-    const { applicationId } = req.params;
-    const { status } = req.body;
-
-    //check if application exists
-    const application = await Application.findById(applicationId).populate(
-      "job"
-    );
-    if (!application) {
-      return res.status(404).json({ message: "Application not found" });
-    }
-
-    if (!["Accepted", "Rejected"].includes(status))
-      return res.status(400).json({ message: "Invalid status" });
-
-    //check if the job belongs to the recruiter
-    if (application.job.recruiter.toString() !== req.userId) {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
-    application.status = status;
-    await application.save();
-    res
-      .status(200)
-      .json({
-        message: "Application status updated successfully",
-        application,
-      });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
 
 //edit recruiter profile
 
@@ -191,38 +138,184 @@ export const getRecruiterStats = async (req, res) => {
     const recruiterId = req.userId; // from auth middleware
 
     // 1. Get all jobs for this recruiter
-    const jobs = await Job.find({ recruiter: recruiterId }).select("_id");
+    const jobs = await Job.find({ recruiter: recruiterId }).select("_id title jobType workMode");
+
+    if (!jobs.length) {
+      return res.status(200).json({
+        totalApplicants: 0,
+        pending: 0,
+        accepted: 0,
+        rejected: 0,
+        workModeCounts: {
+          fullTime: 0,
+          partTime: 0,
+          contract: 0,
+        },
+        acceptedJobTypeCounts: {
+          fullTime: 0,
+          partTime: 0,
+          contract: 0,
+        },
+        applicantsPerJob: []
+      });
+    }
+
     const jobIds = jobs.map(job => job._id);
 
-    // 2. Count total applicants
+    // 2️⃣ GET ACCEPTED APPLICATIONS + POPULATE JOB TYPE
+    const acceptedApplications = await Application.find({
+      job: { $in: jobIds },
+      status: "Accepted"
+    }).populate("job", "jobType");
+
+    // 3️⃣ Count job types among ACCEPTED applicants
+    const acceptedJobTypeCounts = {
+  fullTime: acceptedApplications.filter(
+    (app) => app.job?.jobType === "full-time"
+  ).length,
+
+  partTime: acceptedApplications.filter(
+    (app) => app.job?.jobType === "part-time"
+  ).length,
+
+  contract: acceptedApplications.filter(
+    (app) => app.job?.jobType === "contract"
+  ).length,
+};
+
+
+    // 4️⃣ Count total applicants
     const totalApplicants = await Application.countDocuments({
       job: { $in: jobIds }
     });
 
-    // 3. Count by status
+    // 5️⃣ Count by status
     const pending = await Application.countDocuments({
       job: { $in: jobIds },
       status: "Pending"
     });
+
     const accepted = await Application.countDocuments({
       job: { $in: jobIds },
       status: "Accepted"
     });
+
     const rejected = await Application.countDocuments({
       job: { $in: jobIds },
       status: "Rejected"
     });
 
-    // 4. Send response
+    // 6️⃣ Count work modes among posted jobs
+    const jobTypeCOunts = {
+      fullTime: jobs.filter((j) => j.jobType?.toLowerCase() === "full-time").length,
+      partTime: jobs.filter((j) => j.jobType?.toLowerCase() === "part-time").length,
+      contract: jobs.filter((j) => j.jobType?.toLowerCase() === "contract").length,
+    };
+
+    // 7️⃣ Applicants per job (bar chart)
+    const applicantsPerJob = await Promise.all(
+      jobs.map(async (job) => {
+        const count = await Application.countDocuments({ job: job._id });
+        return {
+          job: job.title,
+          applicants: count,
+        };
+      })
+    );
+
+    // 8️⃣ Send response
     res.status(200).json({
       totalApplicants,
       pending,
       accepted,
-      rejected
+      rejected,
+      jobTypeCOunts,
+      acceptedJobTypeCounts,  // ⭐ NEW STAT ADDED HERE
+      applicantsPerJob
     });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+
+//get all applicants for a job
+export const getJobApplications = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    //check if job exists
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const applications = await Application.find({ job: jobId }).populate(
+      "applicant",
+      "name email skills resume experience"
+    )
+    .populate("job","title");
+    res.status(200).json(applications);
+  } catch (error) {
+    console.error(error);   
+    res.status(500).json({ message: "Internal server error" });
+    console.log(error);
+  }
+};
+
+
+//updateStatus
+
+export const updateApplicationStatus = async(req,res) => {
+  try {
+    const {applicationId} = req.params;
+    const {status} = req.body;
+
+    const application = await Application.findById(applicationId);
+    if(!application) {
+      return res.status(404).json({message: "Application not found"});
+    }
+
+    application.status = status;
+    await application.save();
+    res.status(200).json({message: "Application status updated successfully", application});
+
+  } catch (error) {
+    res.status(500).json({message: "Internal server error" });
+  }
+}
+
+
+
+export const getApplicantsForRecruiter = async (req, res) => {
+  try {
+    const recruiterId = req.userId;
+
+    // 1️⃣ Get all job IDs posted by this recruiter
+    const jobs = await Job.find({ recruiter: recruiterId }).select("_id");
+
+    const jobIds = jobs.map(job => job._id);
+
+    if (jobIds.length === 0) {
+      return res.status(200).json([]); // no jobs → no applicants
+    }
+
+    // 2️⃣ Find all applications for these jobs
+    const applications = await Application.find({ job: { $in: jobIds } })
+      .populate("job")        // get job title, description, etc.
+      .populate("applicant"); // get applicant name, email, skills
+
+    // 3️⃣ Return them
+    res.status(200).json(applications);
+
+  } catch (error) {
+    console.error("Error fetching recruiter applicants:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 

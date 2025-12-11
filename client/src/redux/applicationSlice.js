@@ -7,10 +7,18 @@ const applicationSlice = createSlice({
   },
   reducers: {
     addApplication: (state, action) => {
-      state.applications.push(action.payload);
+      const job = action.payload;
+  const exists = state.applications.find((j) => j._id === job._id);
+  if (!exists) state.applications.push(job);
     },
+    clearApplications: (state) => {
+    state.applications = [];
+  },
+  removeApplication : (state,action)=>{
+    state.applications = state.applications.filter((app) => app._id!==action.payload);
+  }
   },
 });
 
-export const { addApplication } = applicationSlice.actions;
+export const { addApplication , clearApplications,removeApplication } = applicationSlice.actions;
 export default applicationSlice.reducer;

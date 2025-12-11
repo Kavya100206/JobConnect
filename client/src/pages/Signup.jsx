@@ -12,6 +12,7 @@ export default function Signup() {
     password: '',
     role: '',      // either 'applicant' or 'recruiter'
     skills: '',
+    experience: 0,
     resume: '',
     company: '',
     location: '',
@@ -54,6 +55,7 @@ export default function Signup() {
       password: formData.password,
       role: formData.role,
       skills: formData.skills,
+      experience: formData.experience,
       resume: formData.resume,
     };
   }
@@ -79,6 +81,7 @@ export default function Signup() {
       password: '',
       role: '',
       skills: '',
+      experience: 0,
       resume: '',
       company: '',
       location: '',
@@ -216,6 +219,17 @@ export default function Signup() {
                   type="text"
                   id="resume"
                   value={formData.resume}
+                  onChange={handleInputChange}
+                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900">Experience</label>
+                <input
+                  type="text"
+                  id="experience"
+                  value={formData.experience}
                   onChange={handleInputChange}
                   className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />

@@ -13,7 +13,7 @@ import {
   updateJob,
 } from "../apiCalls/recruiterCalls.js";
 import { useSelector } from "react-redux";
-
+import JobForm from "../components/JobForm.jsx";
 
 export default function RecruiterDashboard() {
   const navigate = useNavigate();
@@ -26,17 +26,19 @@ export default function RecruiterDashboard() {
     title: "",
     description: "",
     skillsRequired: [],
+    minExperience: 0,
     salary: "",
     location: "",
     jobType: "full-time",
     workMode: "onsite",
   });
   const [stats, setStats] = useState({
-  totalApplicants: 0,
-  pending: 0,
-  accepted: 0,
-  rejected: 0
-});
+    totalApplicants: 0,
+    pending: 0,
+    accepted: 0,
+    rejected: 0,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
 
 
   const handleInputChange = (field, value) => {
@@ -51,6 +53,7 @@ export default function RecruiterDashboard() {
       title,
       description,
       skillsRequired,
+      minExperience,
       salary,
       location,
       jobType,
@@ -62,6 +65,7 @@ export default function RecruiterDashboard() {
       !title ||
       !description ||
       !skillsRequired ||
+      !minExperience ||
       !salary ||
       !location ||
       !jobType ||
@@ -117,6 +121,7 @@ export default function RecruiterDashboard() {
         title: "",
         description: "",
         skillsRequired: "",
+        minExperience: 0,
         salary: "",
         location: "",
         jobType: "Full-time",
@@ -143,17 +148,16 @@ export default function RecruiterDashboard() {
   }, [profileData]);
 
   useEffect(() => {
-    const getMyStats = async() => {
+    const getMyStats = async () => {
       try {
         const response = await getStats();
-        console.log(response);
-        setStats(response)
+        setStats(response);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getMyStats()
-  } , [profileData])
+    };
+    getMyStats();
+  }, [profileData]);
 
   const handleEditJob = (job) => {
     setEditingJob(job); // mark the job as editing
@@ -161,6 +165,7 @@ export default function RecruiterDashboard() {
       title: job.title,
       description: job.description,
       skillsRequired: job.skillsRequired.join(", "), // convert array to string for input
+      minExperience: job.minExperience,
       salary: job.salary,
       location: job.location,
       jobType: job.jobType,
@@ -183,10 +188,15 @@ export default function RecruiterDashboard() {
     navigate("/login");
   };
 
-  const handleViewApplicants = (jobId) => {
-    navigate(`/recruiter/applications?jobId=${jobId}`);
+  const handleViewApplicants = () => {
+     navigate(`/RecruiterApplications`);
   };
 
+  const jobsPerPage = 6;
+const indexOfLastJob = currentPage * jobsPerPage;
+const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+const totalPages = Math.ceil(jobs.length / jobsPerPage);
   return (
     <div className="flex h-screen bg-background">
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -204,6 +214,8 @@ export default function RecruiterDashboard() {
                   Here's an overview of your job postings.
                 </p>
               </div>
+              
+              <div className="flex gap-4">
               <button
                 onClick={() => setShowJobForm(!showJobForm)}
                 className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
@@ -211,6 +223,14 @@ export default function RecruiterDashboard() {
                 <Plus className="h-4 w-4" />
                 Add New Job
               </button>
+              <button
+                          onClick={() => handleViewApplicants()}
+                          className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-small"
+                        >
+                          <Eye className="h-4 w-4" />
+                          View Applicants
+                        </button>
+                        </div>
             </div>
 
             {/* Quick Stats Section */}
@@ -243,141 +263,14 @@ export default function RecruiterDashboard() {
 
             {/* Create Job Form */}
             {showJobForm && (
-              <div className="bg-card border border-border rounded-lg p-6 mb-8 shadow-sm animate-fade-in">
-                <h3 className="text-xl font-semibold text-foreground mb-6">
-                  {editingJob ? "Edit Job Posting" : "Create New Job Posting"}
-                </h3>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Job Title
-                      </label>
-                      <input
-                        type="text"
-                        value={newJob.title}
-                        onChange={(e) =>
-                          handleInputChange("title", e.target.value)
-                        }
-                        placeholder="e.g., Senior React Developer"
-                        className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Location
-                      </label>
-                      <input
-                        type="text"
-                        value={newJob.location}
-                        onChange={(e) =>
-                          handleInputChange("location", e.target.value)
-                        }
-                        placeholder="e.g., San Francisco, CA"
-                        className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Job Type
-                      </label>
-                      <select
-                        value={newJob.jobType}
-                        onChange={(e) =>
-                          handleInputChange("jobType", e.target.value)
-                        }
-                        className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      >
-                        <option value="full-time">full-time</option>
-                        <option value="part-time">part-time</option>
-                        <option value="contract">contract</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Work Mode
-                      </label>
-                      <select
-                        value={newJob.workMode}
-                        onChange={(e) =>
-                          handleInputChange("workMode", e.target.value)
-                        }
-                        className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      >
-                        <option value="onsite">Onsite</option>
-<option value="remote">Remote</option>
-<option value="hybrid">Hybrid</option>
-
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Salary
-                      </label>
-                      <input
-                        type="text"
-                        value={newJob.salary}
-                        onChange={(e) =>
-                          handleInputChange("salary", e.target.value)
-                        }
-                        placeholder="e.g., $100k - $130k"
-                        className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Skills
-                      </label>
-                      <input
-                        type="text"
-                        value={newJob.skillsRequired || ""}
-                        onChange={(e) =>
-                          handleInputChange("skillsRequired", e.target.value)
-                        }
-                        className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Job Description
-                    </label>
-                    <textarea
-                      value={newJob.description}
-                      onChange={(e) =>
-                        handleInputChange("description", e.target.value)
-                      }
-                      placeholder="Describe the job responsibilities and requirements..."
-                      rows={4}
-                      className="w-full px-4 py-2 border border-border rounded-lg bg-input text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-
-                  <div className="flex gap-3">
-                    <button
-                      onClick={handlePostJob}
-                      className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
-                    >
-                      {editingJob ? "Update Job" : "Post Job"}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setShowJobForm(false);
-                        setEditingJob(null); // reset edit mode
-                      }}
-                      className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <JobForm
+                newJob={newJob}
+                editingJob={editingJob}
+                handleInputChange={handleInputChange}
+                handlePostJob={handlePostJob}
+                setShowJobForm={setShowJobForm}
+                setEditingJob={setEditingJob}
+              />
             )}
 
             {/* Your Job Postings Section */}
@@ -386,37 +279,43 @@ export default function RecruiterDashboard() {
                 Your Job Postings
               </h3>
               <div className="grid grid-cols-1 gap-4">
-                {jobs.map((job) => (
+                {currentJobs.map((job) => (
+
                   <div
                     key={job.id}
                     className="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow animate-fade-in"
                   >
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                       <div className="flex-1">
-                        <h4 className="text-lg font-semibold text-foreground mb-2">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-1">
                           {job.title}
-                        </h4>
-
-                        <div className="flex flex-wrap gap-3 text-sm text-muted-foreground mb-3">
-                          <span>{job.location}</span>
-                          <span className="px-2 py-1 bg-secondary text-secondary-foreground rounded text-xs font-medium">
-                            {job.type}
+                        </h3>
+                        <div className="text-sm text-gray-500 gap-2 flex flex-wrap">
+                          <span className="text-base text-gray-600 mb-4 font-medium ">
+                            📍 {job.location}
                           </span>
-                          <span>
-                            Posted:{" "}
-                            {new Date(job.createdAt).toLocaleDateString()}
+                          <span className="text-base text-gray-600 mb-4 font-medium">
+                            💼 {job.jobType}
+                          </span>
+                          <span className="text-base text-gray-600 mb-4 font-medium">
+                            🏠 {job.workMode}
+                          </span>
+                          <span className="text-base text-gray-600 mb-4 font-medium">
+                            🕒 {job.minExperience} yrs exp
                           </span>
                         </div>
+
+                        <p className="text-base text-gray-700 mb-2 font-semibold">
+                          💰 Salary: ₹{job.salary.toLocaleString()}
+                        </p>
+
+                        <p className="text-sm text-gray-500 font-semibold">
+                          Posted on{" "}
+                          {new Date(job.createdAt).toLocaleDateString()}
+                        </p>
                       </div>
 
                       <div className="flex gap-2">
-                        <button
-                          onClick={() => handleViewApplicants(job.id)}
-                          className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-small"
-                        >
-                          <Eye className="h-4 w-4" />
-                          View Applicants
-                        </button>
                         <button
                           onClick={() => handleEditJob(job)}
                           className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-small"
@@ -434,7 +333,39 @@ export default function RecruiterDashboard() {
                       </div>
                     </div>
                   </div>
+                  
                 ))}
+                {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-12">
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 rounded-lg transition-colors ${
+                        currentPage === page
+                          ? "bg-primary text-primary-foreground"
+                          : "border border-border text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
               </div>
 
               {jobs.length === 0 && (

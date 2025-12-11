@@ -56,6 +56,16 @@ export default function DashboardHeader({ onLogout }) {
           >
             Profile
           </Link>
+          <Link
+            to={
+              user?.role === "applicant"
+                ? "/ApplicantStats"
+                : "/RecruiterStats"
+            }
+            className="text-sm hover:text-blue-600 transition-colors"
+          >
+            Stats
+          </Link>
           <button
             onClick={onLogout}
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 hover:scale-105 transition-transform transition-colors"

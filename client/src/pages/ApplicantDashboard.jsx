@@ -1,37 +1,52 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Search, MapPin, Briefcase } from "lucide-react";
-import DashboardFooter from "../components/footer";
-import DashboardHeader from "../components/header";
-import { useEffect } from "react";
-import {
-  applyJob,
-  getAllJobs,
-  getMyApplications,
-} from "../apiCalls/applicantCalls.js";
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
+import SearchBar from "../components/search-bar"
+import FilterPanel from "../components/filter-panel"
+import JobCard from "../components/job-card"
+import JobTabs from "../components/job-tabs"
+import RecommendedJobs from "../components/recommended-jobs"
+import DashboardHeader from "../components/header"
+import DashboardFooter from "../components/footer"
+import {applyJob, getAllJobs, getMyApplications, getSavedJobs, saveJob, unsaveJob, withdrawApplication} from "../apiCalls/applicantCalls.js"
 import { useDispatch, useSelector } from "react-redux";
-import { addApplication } from "../redux/applicationSlice";
+import { useNavigate } from "react-router-dom"
+import { addApplication, clearApplications, removeApplication } from "../redux/applicationSlice";
+import { addSavedJob, clearSavedJobs, removeSavedJob, setSavedJobs } from "../redux/savedJobSLice.js"
 
-export default function ApplicantDashboard() {
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.user.userData);
+
+
+
+export default function JobDiscovery() {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filters, setFilters] = useState({
+    location: "",
+    jobType: "",
+  })
+  const [currentPage, setCurrentPage] = useState(1)
+  const [activeTab, setActiveTab] = useState("all")
+  const [jobs,myJobs]=useState([])
+  const [filteredJobs, setFilteredJobs] = useState([])
+  const [recommendedJobs,setRecommendedJobs]=useState([])
   const { profileData } = useSelector((state) => state.user); // applicant skills
-  const [recommended, setRecommended] = useState([]);
+  const appliedJobs = useSelector((state) => state.application.applications);
+  const savedJobs = useSelector((state) => state.savedJobs.jobs);
   const dispatch = useDispatch();
-  const applications = useSelector((state) => state.application.applications);
-  const [myJobs, setMyJobs] = useState([]);
+  const navigate = useNavigate();
+ 
 
-  useEffect(() => {
+  const jobsPerPage = 6
+
+    useEffect(() => {
     const fetchRecommended = async () => {
       try {
         const response = await getAllJobs();
-        console.log(response);
+        myJobs(response)
+        setFilteredJobs(response);
 
         // get applicant’s skills from Redux
         const mySkills = profileData?.skills || [];
-        console.log(mySkills);
 
         // ✅ filter jobs where at least one required skill matches applicant skills
         const matchedJobs = response.filter((job) =>
@@ -42,10 +57,7 @@ export default function ApplicantDashboard() {
           )
         );
 
-        console.log(matchedJobs)
-
-        setRecommended(matchedJobs);
-        console.log(recommended);
+        setRecommendedJobs(matchedJobs);
       } catch (error) {
         console.error("Error fetching recommended jobs:", error);
       }
@@ -54,188 +66,281 @@ export default function ApplicantDashboard() {
     fetchRecommended();
   }, [profileData]);
 
-  useEffect(() => {
-    const fetchMyJobs = async () => {
-      try {
-        const response = await getMyApplications();
-        console.log(response);
 
-        setMyJobs(response);
-        console.log(myJobs);
-      } catch (error) {
-        console.error("Error fetching recommended jobs:", error);
+  useEffect(() => {
+  let filtered = [...jobs]
+
+  // 🔍 Search filter
+  if (searchQuery) {
+    filtered = filtered.filter(
+      (job) =>
+        job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.recruiter.company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.skillsRequired?.some((skill) =>
+          skill.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+    )
+  }
+
+  // 📍 Location filter
+  if (filters.location) {
+    filtered = filtered.filter(
+      (job) => job.location?.toLowerCase() === filters.location.toLowerCase()
+    )
+  }
+
+  // 💼 Job Type filter
+  if (filters.jobType) {
+    filtered = filtered.filter(
+      (job) => job.jobType?.toLowerCase() === filters.jobType.toLowerCase()
+    )
+  }
+
+  // 🧠 Experience (if you use it later)
+  if (filters.experience) {
+    filtered = filtered.filter(
+      (job) => job.experience?.toLowerCase() === filters.experience.toLowerCase()
+    )
+  }
+
+  setFilteredJobs(filtered)
+  
+}, [filters, jobs, searchQuery])
+
+
+  const indexOfLastJob = currentPage * jobsPerPage
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob)
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage)
+
+  const savedJobsList = jobs.filter((job) => savedJobs.includes(job._id))
+
+  useEffect(() => {
+    const fetchAppliedJobs = async () => {
+      try {
+        const res = await getMyApplications();// fetch applied jobs for logged-in user
+        const cleaned = res
+        .filter(a => a.job !== null) // skip broken ones
+        .map(a => ({
+          applicationId: a.applicationId,
+          status: a.status,
+          appliedAt: a.appliedAt,
+          ...a.job,               // flatten actual job details
+        }));
+
+      cleaned.forEach((job) => dispatch(addApplication(job)));
+      } catch (err) {
+        console.error("Failed to fetch applied jobs:", err);
       }
     };
 
-    fetchMyJobs();
-  }, [profileData]);
+    fetchAppliedJobs();
+  }, [dispatch]);
 
-  const handleApply = async (jobId) => {
+
+
+  const handleApply = async (job) => {
+  try {
+    const response = await applyJob(job._id); // backend call
+    dispatch(addApplication(job)); // update Redux state
+
+    alert(response.message || "Applied successfully!");
+  } catch (error) {
+    alert(error.response?.data?.message || "Failed to apply");
+    console.error(error);
+  }
+};
+
+useEffect(() => {
+    const fetchSavedJobs = async () => {
+      try {
+        const res = await getSavedJobs(); // fetch applied jobs for logged-in user
+        res.forEach((job) => dispatch(addSavedJob(job))); // populate Redux
+      } catch (err) {
+        console.error("Failed to fetch applied jobs:", err);
+      }
+    };
+
+    fetchSavedJobs();
+  }, [dispatch]);
+
+  const handleSave = async (job) => {
     try {
-      const response = await applyJob(jobId); // call backend
-      dispatch(addApplication(jobId)); // store jobId in redux
-      alert(response.message || "Applied successfully!");
+      const response = await saveJob(job._id); // backend call
+      dispatch(addSavedJob(job)); // update Redux state
+      alert("Job saved successfully!");
     } catch (error) {
-      alert(error.message || "Failed to apply");
+      alert(error.response?.data?.message || "Failed to save job");
+      console.error(error);
     }
-  };
+  }
+
+  const handleUnsave = async (jobId) => {
+  try {
+    const response = await unsaveJob(jobId);
+    dispatch(removeSavedJob(jobId)); // update Redux
+    alert(response.message || "Job unsaved successfully!");
+  } catch (err) {
+    alert(err.response?.data?.message || "Failed to unsave job");
+  }
+};
+
+const handleWithdraw = async(applicantId) => {
+  try {
+    const response = await withdrawApplication(applicantId);
+    dispatch(removeApplication(applicantId)); // update Redux
+    alert(response.message || "Application withdrawn successfully!");
+  } catch (error) {
+    alert(error.response?.data?.message || "Failed to withdraw application");
+    console.error(error);
+  }
+}
+
+
 
   const handleLogout = () => {
-    navigate("/login");
+    dispatch(clearApplications());
+    dispatch(clearSavedJobs());
+    navigate("/login"); 
   };
 
   return (
     
-    <div className="flex h-screen bg-gray-50 overflow-x-hidden">
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader onLogout={handleLogout} />
+    <main className="min-h-screen bg-background">
+      <DashboardHeader onLogout={handleLogout} />
 
-        <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-4 py-8">
-            {/* Welcome Section */}
-            <div className="mb-8 animate-fade-in">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Hi {user?.name}
-              </h2>
-              <p className="text-gray-600 text-xl">Find your next opportunity</p>
-            </div>
-
-            {/* Recommended Jobs */}
-            <h1 className="flex items-center gap-3 my-9">
-              <span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-blue-700 to-indigo-600" />
-              <span className="text-xl md:text-3xl font-semibold text-gray-900">
-                Recommended Jobs
-              </span>
-            </h1>
-
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-
-              {recommended.map((job) => (
-                <div
-                  key={job._id}
-                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col"
-                >
-                  {/* Content (NO flex-grow here) */}
-                  <div>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-5 my-3">
-                      {job.title}
-                    </h4>
-                    <p className="text-l font-semibold text-gray-600 mb-4">
-                      {job.recruiter?.company}
-                    </p>
-                    <div className="flex flex-wrap gap-4 mb-2 text-sm text-gray-600">
-                      <div className="flex items-center gap-1 text-xl font-semibold text-gray-600 mb-2">
-                        <MapPin className="h-4 w-4" />
-                        {job.location}
-                      </div>
-                      <div className="flex items-center gap-1 text-xl font-semibold text-gray-600 mb-2">
-                        <Briefcase className="h-4 w-4" />
-                        {job.jobType}
-                      </div>
-                      <div className="flex items-center gap-1 text-xl font-semibold text-gray-600 mb-2">
-                        ₹{job.salary}
-                      </div>
-                    </div>
-                    <p className="text-gray-800 text-xl mb-3 leading-relaxed line-clamp-3 my-6">
-                      {job.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {job.skillsRequired.map((skill) => (
-                        <span
-                          key={skill}
-                          className="px-3 py-1 bg-gray-100 text-xs rounded-full my-4"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Button uses mt-auto */}
-                  <button
-                    onClick={() => handleApply(job._id)}
-                    disabled={applications.includes(job._id)}
-                    className={`w-full px-6 py-3 rounded-lg font-semibold transition-all mt-auto ${
-                      applications.includes(job._id)
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-indigo-600 text-white hover:bg-indigo-700 hover:scale-105 transform transition-transform"
-                    }`}
-                  >
-                    {applications.includes(job._id) ? "Applied" : "Apply Now"}
-                  </button>
-                </div>
-              ))}
-            </div>
-            
-
-            <h1 className="flex items-center gap-3 my-9">
-              <span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-blue-700 to-indigo-600" />
-              <span className="text-xl md:text-3xl font-semibold text-gray-900">
-                My Jobs
-              </span>
-            </h1>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {myJobs.map((job) => (
-                <div
-                  key={job._id}
-                  className="bg-white border border-gray-300 rounded-lg p-6 shadow hover:shadow-lg transition-all duration-200 flex flex-col w-full "
-                >
-                  {/* Content (NO flex-grow here) */}
-                  <div>
-                    <h4 className="text-2xl font-semibold text-gray-900 mb-5 my-3">
-                      {job.job.title}
-                    </h4>
-                    <p className="text-l font-semibold text-gray-600 mb-4">
-                      {job.recruiter?.company}
-                    </p>
-                    <div className="flex flex-wrap gap-4 mb-2 text-sm text-gray-600">
-                      <div className="flex items-center gap-1 text-xl font-semibold text-gray-600 mb-2">
-                        <MapPin className="h-4 w-4" />
-                        {job.job.location}
-                      </div>
-                      <div className="flex items-center gap-1 text-xl font-semibold text-gray-600 mb-2">
-                        <Briefcase className="h-4 w-4" />
-                        {job.job.jobType}
-                      </div>
-                      <div className="flex items-center gap-1 text-xl font-semibold text-gray-600 mb-2">
-                        ₹{job.job.salary}
-                      </div>
-                    </div>
-                    <p className="text-gray-800 text-xl mb-3 leading-relaxed line-clamp-3 my-6">
-                      {job.job.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {job.job.skillsRequired.map((skill) => (
-                        <span
-                          key={skill}
-                          className="px-3 py-1 bg-gray-100 text-xs rounded-full my-4"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Button uses mt-auto */}
-                  <button
-                    onClick={() => handleApply(job._id)}
-                    disabled={applications.includes(job._id)}
-                    className={`w-full px-6 py-3 rounded-lg font-semibold transition-all mt-auto ${
-                      applications.includes(job._id)
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-indigo-600 text-white hover:bg-indigo-700 hover:scale-105 transform transition-transform"
-                    }`}
-                  >
-                    {applications.includes(job._id) ? "Applied" : "Apply Now"}
-                  </button>
-                </div>
-              ))}
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+          <div className="lg:col-span-3">
+            <SearchBar value={searchQuery} onChange={setSearchQuery} />
           </div>
-        </main>
+          <div>
+            <FilterPanel filters={filters} setFilters={setFilters} setCurrentPage={setCurrentPage} />
+          </div>
+        </div>
 
-        <DashboardFooter />
+        <RecommendedJobs jobs={recommendedJobs} onSave={handleSave} onApply={handleApply}  appliedJobs={appliedJobs} savedJobs={savedJobs} onUnSave={handleUnsave} withdrawApplication={handleWithdraw}/>
+
+        <div className="mt-12">
+          <JobTabs
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            counts={{ all: filteredJobs.length, saved: savedJobs.length, applied: appliedJobs.length }}
+          />
+
+          {activeTab === "all" && (
+            <motion.div key="all-jobs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {currentJobs.map((job, index) => (
+                  <JobCard
+                    key={job._id}
+                    job={job}
+                    isSaved={savedJobs.includes(job)}
+                    isApplied={appliedJobs.some((j) => j._id === job._id)} 
+                    onSave={() => handleSave(job)}         // FIX 1: Wrap handleSave
+    onUnSave={() => handleUnsave(job._id)} // FIX 2: Wrap handleUnsave (assuming handleUnsave takes only ID)
+    onApply={() => handleApply(job)}
+                    withdrawApplication={handleWithdraw}
+                    index={index}
+                  />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-12">
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 rounded-lg transition-colors ${
+                        currentPage === page
+                          ? "bg-primary text-primary-foreground"
+                          : "border border-border text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {activeTab === "saved" && (
+            <motion.div key="saved-jobs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+              {savedJobs.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {savedJobs.map((job, index) => (
+                    <JobCard
+                      key={job._id}
+                      job={job}
+                      isSaved={savedJobs.some((j) => j._id === job._id)}
+                      isApplied={appliedJobs.some((j) => j._id === job._id)} 
+                      onSave={() => handleSave(job)}
+                      onApply={() => handleApply(job)}
+                      onUnSave={() => handleUnsave(job._id)}
+                      withdrawApplication={() => handleWithdraw(job._id)}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No saved jobs yet. Start saving jobs you like!</p>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {activeTab === "applied" && (
+            <motion.div
+              key="applied-jobs"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {appliedJobs.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {appliedJobs.map((job, index) => (
+                    <JobCard
+                      key={job._id}
+                      job={job}
+                      isSaved={savedJobs.some((j) => j._id === job._id)}
+                      isApplied={appliedJobs.some((j) => j._id === job._id)} 
+                      onSave={() => handleSave(job)}
+                      onApply={() => handleApply(job)}
+                      onUnSave={() => handleUnsave(job._id)}
+                      withdrawApplication={() => handleWithdraw(job._id)}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">You haven't applied to any jobs yet. Start applying!</p>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+      <DashboardFooter />
+    </main>
+    
+  )
 }

@@ -67,3 +67,34 @@ export const getStats = async() => {
     
   }
 }
+
+//view all applicants
+export const viewApplicants = async(jobId) => {
+  try{
+    const response = await api.get(`api/recruiter/viewApplicants/${jobId}`);
+    return response.data;
+  }
+  catch(error){
+    throw error.response.data;
+  }
+}
+
+//update application status
+export const updateApplicationStatus = async(applicationId, status) => {
+  try {
+    const response = await api.put(`api/recruiter/updateApplicationStatus/${applicationId}`, {status});
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+
+//get all applicants for recruiter
+export const getAllApplicants = async() => {
+  try {
+    const response = await api.get('api/recruiter/getApplicants');
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}

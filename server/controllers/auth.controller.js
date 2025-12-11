@@ -11,6 +11,7 @@ export const signUp = async (req, res) => {
     password,
     role,
     skills,
+    experience,
     resume,
     company,
     location,
@@ -48,6 +49,7 @@ export const signUp = async (req, res) => {
         email,
         password: hashedPassword,
         skills: formattedSkills,
+        experience,
         resume,
       });
     } else if (role === "recruiter") {

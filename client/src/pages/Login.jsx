@@ -51,6 +51,7 @@ export default function Login() {
 
       dispatch(
         setUserData({
+          id : response.user._id,
           name: response.user.name,
           email: response.user.email,
           role: response.user.role,
@@ -63,6 +64,7 @@ export default function Login() {
           setProfileData({
             skills: response.user.skills,
             resume: response.user.resume,
+            experience: response.user.experience,
           })
         );
       } else if (response.user.role === "recruiter") {
