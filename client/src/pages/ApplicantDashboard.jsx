@@ -120,6 +120,7 @@ export default function JobDiscovery() {
     const fetchAppliedJobs = async () => {
       try {
         const res = await getMyApplications();// fetch applied jobs for logged-in user
+         dispatch(clearApplications());
         const cleaned = res
         .filter(a => a.job !== null) // skip broken ones
         .map(a => ({
@@ -156,6 +157,7 @@ useEffect(() => {
     const fetchSavedJobs = async () => {
       try {
         const res = await getSavedJobs(); // fetch applied jobs for logged-in user
+        dispatch(clearSavedJobs());
         res.forEach((job) => dispatch(addSavedJob(job))); // populate Redux
       } catch (err) {
         console.error("Failed to fetch applied jobs:", err);

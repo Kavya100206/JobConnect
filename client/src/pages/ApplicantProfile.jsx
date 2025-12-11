@@ -22,6 +22,8 @@ export default function ApplicantProfile() {
   const [isEditing, setIsEditing] = useState(false)
   const [editedProfile, setEditedProfile] = useState(profileData || { skills: [], resume: "" })
   const [newSkill, setNewSkill] = useState("")
+  const [newExperience, setNewExperience] = useState("");
+
   const navigate = useNavigate();
 
   // Handle input change
@@ -39,6 +41,15 @@ export default function ApplicantProfile() {
       setNewSkill("")
     }
   }
+  const addExperience = () => {
+  if (!newExperience.trim()) return;
+  setEditedProfile({
+    ...editedProfile,
+    experience: [...(editedProfile.experience || []), newExperience.trim()],
+  });
+  setNewExperience("");
+};
+
 
   // Cancel editing
   const handleCancel = () => {
@@ -178,6 +189,7 @@ export default function ApplicantProfile() {
                   </div>
                 ))}
               </div>
+              
               {isEditing && (
                 <div className="flex gap-2 pt-4">
                   <input
@@ -224,7 +236,9 @@ export default function ApplicantProfile() {
                   )}
                 </div>
               </div>
-            </section>
+            </section> 
+
+            
 
             {/* Action Buttons */}
             {isEditing && (
