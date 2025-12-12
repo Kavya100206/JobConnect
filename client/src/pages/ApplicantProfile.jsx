@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import DashboardFooter from "../components/footer.jsx"
 import DashboardHeader from "../components/header.jsx"
 import { useSelector, useDispatch } from "react-redux"
-import { Mail, FileText, Edit2, Save, X, Plus } from "lucide-react"
+import { Mail, FileText, Edit2, Save, X, Plus, Camera } from "lucide-react"
 import { setProfileData, setUserData } from "../redux/userSlice"
 import { updateApplicantProfile } from "../apiCalls/applicantCalls.js"
 import { useNavigate } from "react-router-dom"
@@ -20,9 +20,10 @@ export default function ApplicantProfile() {
 
   // === State for editing ===
   const [isEditing, setIsEditing] = useState(false)
-  const [editedProfile, setEditedProfile] = useState(profileData || { skills: [], resume: "" })
+  const [editedProfile, setEditedProfile] = useState(profileData || { skills: [], resume: "" , email:""})
   const [newSkill, setNewSkill] = useState("")
-  const [newExperience, setNewExperience] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const navigate = useNavigate();
 
@@ -41,45 +42,65 @@ export default function ApplicantProfile() {
       setNewSkill("")
     }
   }
-  const addExperience = () => {
-  if (!newExperience.trim()) return;
-  setEditedProfile({
-    ...editedProfile,
-    experience: [...(editedProfile.experience || []), newExperience.trim()],
-  });
-  setNewExperience("");
-};
 
+  // Handle file selection
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Cancel editing
   const handleCancel = () => {
     setEditedProfile(profileData) // revert changes
     setIsEditing(false)
+    setSelectedFile(null);
+    setImagePreview(null);
   }
 
   // Save changes
   const handleSave = async () => {
     try {
-      // Send updated data to backend
-      const response = await updateApplicantProfile(editedProfile)
-      console.log(editedProfile.skills)
-      console.log(response.user.skills)
+      // Create FormData if file is selected, otherwise send regular object
+      let dataToSend;
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append('name', editedProfile.name || user?.name);
+        formData.append('email', editedProfile.email || user?.email);
+        formData.append('skills', JSON.stringify(editedProfile.skills));
+        formData.append('resume', editedProfile.resume);
+        formData.append('profilePicture', selectedFile);
+        dataToSend = formData;
+      } else {
+        dataToSend = editedProfile;
+      }
 
+      const response = await updateApplicantProfile(dataToSend);
 
-      setIsEditing(false)
+      setIsEditing(false);
+      setSelectedFile(null);
+      setImagePreview(null);
+
       dispatch(
-                setUserData({
-                  name: response?.user?.name,
-                  email:response?.user?.email,
-                  role:response?.user?.role
-                })
-              );
-    dispatch(
-              setProfileData({
-                skills: response?.user?.skills,
-                resume: response?.user?.resume,
-              })
-            );
+        setUserData({
+          name: response?.user?.name,
+          email: response?.user?.email,
+          role: response?.user?.role,
+          profilePicture: response?.user?.profilePicture
+        })
+      );
+      dispatch(
+        setProfileData({
+          skills: response?.user?.skills,
+          resume: response?.user?.resume,
+        })
+      );
       alert("Profile updated successfully!")
     } catch (err) {
       console.log(err)
@@ -94,7 +115,7 @@ export default function ApplicantProfile() {
   return (
     <div className="flex h-screen bg-gray-50">
       <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader onLogout={handleLogout}/>
+        <DashboardHeader onLogout={handleLogout} />
 
         <main className="flex-1 overflow-y-auto">
           {/* Profile Header */}
@@ -104,10 +125,35 @@ export default function ApplicantProfile() {
                 <div className="flex items-end gap-6">
                   <div className="relative">
                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-700 to-indigo-600 p-1 shadow-lg">
-                      <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-4xl font-bold text-blue-700">
-                        {user?.name?.[0]}
-                      </div>
+                      {imagePreview || user?.profilePicture ? (
+                        <img
+                          src={imagePreview || user.profilePicture}
+                          alt="Profile"
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-4xl font-bold text-blue-700">
+                          {user?.name?.[0]}
+                        </div>
+                      )}
                     </div>
+                    {isEditing && (
+                      <div>
+                        <input
+                          type="file"
+                          id="profile-pic"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden"
+                        />
+                        <label
+                          htmlFor="profile-pic"
+                          className="absolute bottom-0 right-0 bg-blue-700 text-white p-2 rounded-full cursor-pointer hover:bg-blue-800 transition shadow-lg"
+                        >
+                          <Camera className="h-4 w-4" />
+                        </label>
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1 pb-2">
                     <h1 className="text-3xl font-bold text-gray-900 mb-1">
@@ -155,7 +201,16 @@ export default function ApplicantProfile() {
                   <label className="flex items-center gap-2 font-medium mb-1">
                     <Mail className="h-4 w-4 text-blue-700" /> Email
                   </label>
-                  <p className="font-medium">{user?.email || "N/A"}</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editedProfile.email || ""}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                    />
+                  ) : (
+                    <p className="font-medium">{user?.email || "N/A"}</p>
+                  )}
                 </div>
               </div>
             </section>
@@ -189,7 +244,7 @@ export default function ApplicantProfile() {
                   </div>
                 ))}
               </div>
-              
+
               {isEditing && (
                 <div className="flex gap-2 pt-4">
                   <input
@@ -236,9 +291,9 @@ export default function ApplicantProfile() {
                   )}
                 </div>
               </div>
-            </section> 
+            </section>
 
-            
+
 
             {/* Action Buttons */}
             {isEditing && (

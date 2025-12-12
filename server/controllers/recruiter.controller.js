@@ -1,6 +1,10 @@
 import Application from "../models/applicant.model.js";
 import Job from "../models/job.model.js";
 import { Recruiter } from "../models/user.model.js";
+import cloudinary from "../config/cloudinary.config.js";
+import { sendEmail } from "../services/email.service.js";
+import { applicationAcceptedTemplate, applicationRejectedTemplate } from "../utils/emailTemplates.js";
+import Notification from "../models/notification.model.js";
 
 //post a job
 
@@ -22,7 +26,7 @@ export const createJob = async (req, res) => {
       !title ||
       !description ||
       !skillsRequired ||
-      !minExperience||
+      !minExperience ||
       !location ||
       !salary ||
       !jobType ||
@@ -76,7 +80,7 @@ export const updateJob = async (req, res) => {
 
     Object.assign(job, req.body);
     await job.save();
-    res.status(200).json({ message: "Job updated successfully", job:job });
+    res.status(200).json({ message: "Job updated successfully", job: job });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
@@ -107,13 +111,32 @@ export const deleteJob = async (req, res) => {
 export const updateRecruiterProfile = async (req, res) => {
   try {
     const userId = req.userId;
-    const { name, company, location } = req.body;
+    const { name, company, location, email } = req.body;
+
+    // Prepare update object
+    const updateData = { name, company, location, email };
+
+    // If a file is uploaded, upload to Cloudinary
+    if (req.file) {
+      // Convert buffer to base64
+      const fileStr = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+      // Upload to Cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(fileStr, {
+        folder: "jobconnect/profile-pictures",
+        resource_type: "image",
+      });
+
+      // Add Cloudinary URL to update data
+      updateData.profilePicture = uploadResponse.secure_url;
+    }
 
     const updatedUser = await Recruiter.findByIdAndUpdate(
       userId,
-      { name, company, location },
+      updateData,
       { new: true } // return updated user
     ).select("-password");
+
     res.status(200).json({
       success: true,
       message: "Profile updated successfully",
@@ -170,18 +193,18 @@ export const getRecruiterStats = async (req, res) => {
 
     // 3️⃣ Count job types among ACCEPTED applicants
     const acceptedJobTypeCounts = {
-  fullTime: acceptedApplications.filter(
-    (app) => app.job?.jobType === "full-time"
-  ).length,
+      fullTime: acceptedApplications.filter(
+        (app) => app.job?.jobType === "full-time"
+      ).length,
 
-  partTime: acceptedApplications.filter(
-    (app) => app.job?.jobType === "part-time"
-  ).length,
+      partTime: acceptedApplications.filter(
+        (app) => app.job?.jobType === "part-time"
+      ).length,
 
-  contract: acceptedApplications.filter(
-    (app) => app.job?.jobType === "contract"
-  ).length,
-};
+      contract: acceptedApplications.filter(
+        (app) => app.job?.jobType === "contract"
+      ).length,
+    };
 
 
     // 4️⃣ Count total applicants
@@ -257,10 +280,10 @@ export const getJobApplications = async (req, res) => {
       "applicant",
       "name email skills resume experience"
     )
-    .populate("job","title");
+      .populate("job", "title");
     res.status(200).json(applications);
   } catch (error) {
-    console.error(error);   
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
     console.log(error);
   }
@@ -269,22 +292,78 @@ export const getJobApplications = async (req, res) => {
 
 //updateStatus
 
-export const updateApplicationStatus = async(req,res) => {
+export const updateApplicationStatus = async (req, res) => {
   try {
-    const {applicationId} = req.params;
-    const {status} = req.body;
+    const { applicationId } = req.params;
+    const { status } = req.body;
 
-    const application = await Application.findById(applicationId);
-    if(!application) {
-      return res.status(404).json({message: "Application not found"});
+    const application = await Application.findById(applicationId)
+      .populate("applicant", "name email")
+      .populate({
+        path: "job",
+        populate: {
+          path: "recruiter",
+          select: "name email company"
+        }
+      });
+
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
     }
 
     application.status = status;
     await application.save();
-    res.status(200).json({message: "Application status updated successfully", application});
+
+    // Send email to applicant based on status (non-blocking)
+    if (application.applicant && application.applicant.email) {
+      const emailTemplate = status === "Accepted"
+        ? applicationAcceptedTemplate(
+          application.applicant.name,
+          {
+            title: application.job.title,
+            location: application.job.location,
+            workMode: application.job.workMode,
+          },
+          {
+            company: application.job.recruiter.company,
+            email: application.job.recruiter.email,
+          }
+        )
+        : applicationRejectedTemplate(
+          application.applicant.name,
+          {
+            title: application.job.title,
+          },
+          {
+            company: application.job.recruiter.company,
+          }
+        );
+
+      const emailSubject = status === "Accepted"
+        ? `Congratulations! Application Accepted for ${application.job.title}`
+        : `Application Status Update - ${application.job.title}`;
+
+      sendEmail(
+        application.applicant.email,
+        emailSubject,
+        emailTemplate
+      ).catch((error) => console.error("Email error (non-critical):", error));
+    }
+
+    // Create notification for applicant
+    await Notification.create({
+      user: application.applicant._id,
+      type: status === "Accepted" ? "application_accepted" : "application_rejected",
+      message: `Your application for ${application.job.title} has been ${status.toLowerCase()}`,
+      relatedJob: application.job._id,
+      relatedApplication: applicationId,
+    }).catch((error) => console.error("Notification error (non-critical):", error));
+
+    res.status(200).json({ message: "Application status updated successfully", application });
 
   } catch (error) {
-    res.status(500).json({message: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 

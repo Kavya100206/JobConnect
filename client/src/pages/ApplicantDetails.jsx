@@ -8,6 +8,8 @@ import AppliedJobCard from "../components/AppliedJobCard";
 import { getMyApplications } from "../apiCalls/applicantCalls";
 import SearchBar from "../components/search-bar";
 import FilterPanelAppliedJob from "../components/FIlterPanelAppliedJobs";
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function ApplicationDetailsPage() {
@@ -17,6 +19,7 @@ export default function ApplicationDetailsPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 8;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -69,9 +72,13 @@ export default function ApplicationDetailsPage() {
     currentPage * jobsPerPage
   );
 
+  const handleLogout = () => {
+    navigate("/login");
+  };
+
   return (
     <main className="min-h-screen bg-background">
-      <DashboardHeader />
+      <DashboardHeader onLogout={handleLogout} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 

@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    profilePicture: { type: String, default: "" }, // Cloudinary URL
   },
   options
 );
@@ -18,10 +19,10 @@ const applicantSchema = new mongoose.Schema({
   skills: { type: [String], required: true },
   resume: { type: String, required: true },
   experience: {
-  type: Number, // in years
-  required: true
-},
-savedJobs: [
+    type: Number, // in years
+    required: true
+  },
+  savedJobs: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Job', // Reference to your Job model
@@ -42,4 +43,4 @@ const User = mongoose.model("User", userSchema);
 const Applicant = User.discriminator("applicant", applicantSchema);
 const Recruiter = User.discriminator("recruiter", recruiterSchema);
 
-export  { User, Applicant, Recruiter };
+export { User, Applicant, Recruiter };

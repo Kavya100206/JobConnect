@@ -51,10 +51,11 @@ export default function Login() {
 
       dispatch(
         setUserData({
-          id : response.user._id,
+          id: response.user._id,
           name: response.user.name,
           email: response.user.email,
           role: response.user.role,
+          profilePicture: response.user.profilePicture,
         })
       );
 
@@ -78,7 +79,7 @@ export default function Login() {
       if (response.user.role === "applicant") {
         navigate("/ApplicantDashboard");
       }
-      else{
+      else {
         navigate("/RecruiterDashboard")
       }
 

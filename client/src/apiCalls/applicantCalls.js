@@ -10,24 +10,30 @@ const api = axios.create({
 });
 
 //update profile
-export const updateApplicantProfile = async(userData) => {
-    try {
-        const response = await api.post('api/applicant/updateProfile' , userData)
-        return response.data;
-    } catch (error) {
-        throw error.response.data;
+export const updateApplicantProfile = async (userData) => {
+  try {
+    // Check if userData is FormData or a regular object
+    const config = {};
+    if (userData instanceof FormData) {
+      config.headers = { 'Content-Type': 'multipart/form-data' };
     }
+
+    const response = await api.post('api/applicant/updateProfile', userData, config);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
 }
 
 //getAllJobs
 
-export const getAllJobs = async() => {
-    try {
-        const response = await api.get('api/applicant/jobs')
-        return response.data;
-    } catch (error) {
-        throw error.response.data;
-    }
+export const getAllJobs = async () => {
+  try {
+    const response = await api.get('api/applicant/jobs')
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
 }
 
 
@@ -43,7 +49,7 @@ export const applyJob = async (jobId) => {
 
 //get my applications
 
-export const getMyApplications = async() => {
+export const getMyApplications = async () => {
   try {
     const response = await api.get('api/applicant/myApplications');
     return response.data;
@@ -53,19 +59,19 @@ export const getMyApplications = async() => {
 }
 
 //withdraw application
-export const withdrawApplication = async(applicationId) => {
+export const withdrawApplication = async (applicationId) => {
   try {
-    const response = await api.delete(`api/applicant/withdraw/${applicationId}`); 
+    const response = await api.delete(`api/applicant/withdraw/${applicationId}`);
     return response.data;
   } catch (error) {
     throw error.response.data;
-  } 
+  }
 };
 
 
 
 // Save a job
-export const saveJob= async (jobId) => {
+export const saveJob = async (jobId) => {
   try {
     const res = await api.post(
       `/api/applicant/saveJob/${jobId}`
