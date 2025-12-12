@@ -135,7 +135,7 @@ export default function NotificationBell() {
                                 <button
                                     onClick={handleMarkAllAsRead}
                                     disabled={loading}
-                                    className="text-sm text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50"
+                                    className="text-sm text-[#71C0BB] hover:text-[#5aa8a3] font-medium disabled:opacity-50"
                                 >
                                     {loading ? "Marking..." : "Mark all as read"}
                                 </button>
@@ -153,7 +153,7 @@ export default function NotificationBell() {
                                 notifications.map((notification) => (
                                     <div
                                         key={notification._id}
-                                        className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${!notification.isRead ? "bg-blue-50" : ""
+                                        className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${!notification.isRead ? "bg-[#E3EEB2]/30" : ""
                                             }`}
                                     >
                                         <div className="flex items-start gap-3">

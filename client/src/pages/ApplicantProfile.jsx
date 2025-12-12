@@ -119,12 +119,12 @@ export default function ApplicantProfile() {
 
         <main className="flex-1 overflow-y-auto">
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-blue-100 via-indigo-50 to-blue-100 border-b border-gray-300/50">
+          <div className="bg-gradient-to-r from-[#E3EEB2] via-[#71C0BB]/20 to-[#E3EEB2] border-b border-gray-300/50">
             <div className="max-w-4xl mx-auto px-6 py-12">
               <div className="flex items-end justify-between gap-6">
                 <div className="flex items-end gap-6">
                   <div className="relative">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-700 to-indigo-600 p-1 shadow-lg">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#332D56] to-[#4E6687] p-1 shadow-lg">
                       {imagePreview || user?.profilePicture ? (
                         <img
                           src={imagePreview || user.profilePicture}
@@ -132,7 +132,7 @@ export default function ApplicantProfile() {
                           className="w-full h-full rounded-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-4xl font-bold text-blue-700">
+                        <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-4xl font-bold text-[#332D56]">
                           {user?.name?.[0]}
                         </div>
                       )}
@@ -148,7 +148,7 @@ export default function ApplicantProfile() {
                         />
                         <label
                           htmlFor="profile-pic"
-                          className="absolute bottom-0 right-0 bg-blue-700 text-white p-2 rounded-full cursor-pointer hover:bg-blue-800 transition shadow-lg"
+                          className="absolute bottom-0 right-0 bg-[#332D56] text-white p-2 rounded-full cursor-pointer hover:bg-[#1a1825] transition shadow-lg"
                         >
                           <Camera className="h-4 w-4" />
                         </label>
@@ -165,7 +165,7 @@ export default function ApplicantProfile() {
                 {!isEditing && (
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
+                    className="flex items-center gap-2 px-5 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
                   >
                     <Edit2 className="h-5 w-5" /> Edit Profile
                   </button>
@@ -179,7 +179,7 @@ export default function ApplicantProfile() {
             {/* Basic Info */}
             <section className="bg-white border border-gray-300 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-                <div className="w-1 h-6 bg-gradient-to-b from-blue-700 to-indigo-600 rounded-full"></div>
+                <div className="w-1 h-6 bg-gradient-to-b from-[#332D56] to-[#4E6687] rounded-full"></div>
                 Basic Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700 text-sm">
@@ -190,7 +190,7 @@ export default function ApplicantProfile() {
                       type="text"
                       value={editedProfile.name || ""}
                       onChange={(e) => handleInputChange("name", e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#71C0BB] focus:border-transparent transition"
                     />
                   ) : (
                     <p className="font-medium">{user?.name || "N/A"}</p>
@@ -199,14 +199,14 @@ export default function ApplicantProfile() {
 
                 <div>
                   <label className="flex items-center gap-2 font-medium mb-1">
-                    <Mail className="h-4 w-4 text-blue-700" /> Email
+                    <Mail className="h-4 w-4 text-[#71C0BB]" /> Email
                   </label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={editedProfile.email || ""}
                       onChange={(e) => handleInputChange("email", e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#71C0BB] focus:border-transparent transition"
                     />
                   ) : (
                     <p className="font-medium">{user?.email || "N/A"}</p>
@@ -218,14 +218,14 @@ export default function ApplicantProfile() {
             {/* Skills */}
             <section className="bg-white border border-gray-300 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-                <div className="w-1 h-6 bg-gradient-to-b from-blue-700 to-indigo-600 rounded-full"></div>
+                <div className="w-1 h-6 bg-gradient-to-b from-[#332D56] to-[#4E6687] rounded-full"></div>
                 Skills & Expertise
               </h3>
               <div className="flex flex-wrap gap-3 mb-6">
                 {editedProfile.skills?.map((skill) => (
                   <div
                     key={skill}
-                    className="group relative px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 border border-blue-200 text-blue-700 rounded-full text-sm font-medium"
+                    className="group relative px-4 py-2 bg-gradient-to-r from-[#E3EEB2]/50 to-[#71C0BB]/30 border border-[#71C0BB]/40 text-[#332D56] rounded-full text-sm font-medium"
                   >
                     {skill}
                     {isEditing && (
@@ -253,11 +253,11 @@ export default function ApplicantProfile() {
                     onChange={(e) => setNewSkill(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && addSkill()}
                     placeholder="Add a new skill..."
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#71C0BB] focus:border-transparent transition"
                   />
                   <button
                     onClick={addSkill}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#4E6687] to-[#71C0BB] text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
                   >
                     <Plus className="h-4 w-4" /> Add
                   </button>
@@ -268,13 +268,13 @@ export default function ApplicantProfile() {
             {/* Resume */}
             <section className="bg-white border border-gray-300 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <div className="w-1 h-6 bg-gradient-to-b from-blue-700 to-indigo-600 rounded-full"></div>
+                <div className="w-1 h-6 bg-gradient-to-b from-[#332D56] to-[#4E6687] rounded-full"></div>
                 Resume
               </h3>
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#E3EEB2]/30 to-[#71C0BB]/20 border border-[#71C0BB]/30 rounded-lg">
                 <div className="flex items-center gap-3 w-full">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <FileText className="h-5 w-5 text-blue-700" />
+                  <div className="p-2 bg-[#E3EEB2]/50 rounded-lg">
+                    <FileText className="h-5 w-5 text-[#332D56]" />
                   </div>
                   {isEditing ? (
                     <input
@@ -282,7 +282,7 @@ export default function ApplicantProfile() {
                       value={editedProfile.resume || ""}
                       onChange={(e) => handleInputChange("resume", e.target.value)}
                       placeholder="Paste your resume link here..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#71C0BB] focus:border-transparent transition"
                     />
                   ) : (
                     <span className="text-gray-900 font-medium truncate max-w-xs">
@@ -300,7 +300,7 @@ export default function ApplicantProfile() {
               <div className="flex gap-4 pt-6">
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#4E6687] to-[#71C0BB] text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
                 >
                   <Save className="h-5 w-5" /> Save Changes
                 </button>

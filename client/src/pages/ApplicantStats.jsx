@@ -102,7 +102,7 @@ export default function ApplicantStats() {
                 {
                   label: "Total",
                   value: stats.total,
-                  color: "bg-blue-50 text-blue-700",
+                  color: "bg-[#E3EEB2]/40 text-[#332D56]",
                 },
                 {
                   label: "Pending",
@@ -193,7 +193,7 @@ export default function ApplicantStats() {
                   {recentApps.length > 0 && (
                     <button
                       onClick={() => navigate("/ApplicantDetails")}
-                      className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
+                      className="flex items-center gap-2 px-5 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
                     >
                       View All →
                     </button>

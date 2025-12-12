@@ -99,7 +99,7 @@ export default function Login() {
         {/* Header */}
         <div className="mb-8 text-center">
           <div className="flex items-center justify-center gap-2">
-            <Briefcase className="h-8 w-8 text-blue-600" />
+            <Briefcase className="h-8 w-8 text-[#71C0BB]" />
             <h1 className="text-2xl font-bold text-gray-900">JobConnect</h1>
           </div>
           <p className="mt-2 text-gray-600">
@@ -116,7 +116,7 @@ export default function Login() {
               id="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
             />
           </div>
           {/* Password with toggle */}
@@ -128,7 +128,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-xs text-blue-600 hover:underline"
+                className="text-xs text-[#71C0BB] hover:underline"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -139,7 +139,7 @@ export default function Login() {
                 id="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="pr-10 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="pr-10 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
               />
               <button
                 type="button"
@@ -163,7 +163,7 @@ export default function Login() {
           {/* Submit button */}
           <button
             type="submit"
-            className="my-4 w-full bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition"
+            className="my-4 w-full bg-[#71C0BB] text-white rounded px-4 py-2 hover:bg-[#5aa8a3] transition"
             onClick={handlelogin}
           >
             Login
@@ -179,7 +179,7 @@ export default function Login() {
             Don't have an account?{" "}
             <button
               onClick={() => navigate("/signup")}
-              className="font-semibold text-blue-600 hover:underline"
+              className="font-semibold text-[#71C0BB] hover:underline"
             >
               Sign up
             </button>

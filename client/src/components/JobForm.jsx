@@ -126,7 +126,7 @@ export default function JobForm({
         <div className="flex gap-3">
           <button
             onClick={handlePostJob}
-            className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
+            className="flex items-center gap-2 px-5 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
           >
             {editingJob ? "Update Job" : "Post Job"}
           </button>
@@ -135,7 +135,7 @@ export default function JobForm({
               setShowJobForm(false);
               setEditingJob(null); // reset edit mode
             }}
-            className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
+            className="flex items-center gap-2 px-5 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
           >
             Cancel
           </button>

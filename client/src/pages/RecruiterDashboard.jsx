@@ -189,14 +189,14 @@ export default function RecruiterDashboard() {
   };
 
   const handleViewApplicants = () => {
-     navigate(`/RecruiterApplications`);
+    navigate(`/RecruiterApplications`);
   };
 
   const jobsPerPage = 6;
-const indexOfLastJob = currentPage * jobsPerPage;
-const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
-const totalPages = Math.ceil(jobs.length / jobsPerPage);
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(jobs.length / jobsPerPage);
   return (
     <div className="flex h-screen bg-background">
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -214,23 +214,23 @@ const totalPages = Math.ceil(jobs.length / jobsPerPage);
                   Here's an overview of your job postings.
                 </p>
               </div>
-              
+
               <div className="flex gap-4">
-              <button
-                onClick={() => setShowJobForm(!showJobForm)}
-                className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
-              >
-                <Plus className="h-4 w-4" />
-                Add New Job
-              </button>
-              <button
-                          onClick={() => handleViewApplicants()}
-                          className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-small"
-                        >
-                          <Eye className="h-4 w-4" />
-                          View Applicants
-                        </button>
-                        </div>
+                <button
+                  onClick={() => setShowJobForm(!showJobForm)}
+                  className="flex items-center gap-2 px-5 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-medium"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add New Job
+                </button>
+                <button
+                  onClick={() => handleViewApplicants()}
+                  className="flex items-center gap-2 px-5 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-small"
+                >
+                  <Eye className="h-4 w-4" />
+                  View Applicants
+                </button>
+              </div>
             </div>
 
             {/* Quick Stats Section */}
@@ -318,14 +318,14 @@ const totalPages = Math.ceil(jobs.length / jobsPerPage);
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEditJob(job)}
-                          className="flex items-center gap-2 px-5 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-small"
+                          className="flex items-center gap-2 px-5 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-200 font-small"
                         >
                           <Edit2 className="h-4 w-4" />
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteJob(job._id)}
-                          className="flex items-center gap-1 px-2 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:shadow-l hover:scale-105 transition-transform duration-200 font-small"
+                          className="flex items-center gap-1 px-2 py-2 bg-[#71C0BB] text-white rounded-lg shadow-md hover:shadow-l hover:scale-105 transition-transform duration-200 font-small"
                         >
                           <Trash2 className="h-4 w-4" />
                           Delete
@@ -333,39 +333,38 @@ const totalPages = Math.ceil(jobs.length / jobsPerPage);
                       </div>
                     </div>
                   </div>
-                  
+
                 ))}
                 {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-12">
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Previous
-                  </button>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <div className="flex justify-center items-center gap-2 mt-12">
                     <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`px-3 py-2 rounded-lg transition-colors ${
-                        currentPage === page
-                          ? "bg-primary text-primary-foreground"
-                          : "border border-border text-foreground hover:bg-muted"
-                      }`}
+                      onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      {page}
+                      Previous
                     </button>
-                  ))}
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`px-3 py-2 rounded-lg transition-colors ${currentPage === page
+                            ? "bg-primary text-primary-foreground"
+                            : "border border-border text-foreground hover:bg-muted"
+                          }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
               </div>
 
               {jobs.length === 0 && (

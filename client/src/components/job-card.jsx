@@ -123,8 +123,8 @@ export default function JobCard({
           className={`flex-1 px-4 py-2 rounded-lg font-medium transition-all flex items-center justify-center gap-2
       ${
         isApplied
-          ? "bg-[#1D4ED8] text-white shadow-md shadow-blue-100"
-          : "bg-[#E6F0FF] text-[#1D4ED8] border border-[#BFD6FF] hover:bg-[#D9E8FF]"
+          ? "bg-[#332D56] text-white shadow-md shadow-[#71C0BB]/20"
+          : "bg-[#E3EEB2]/40 text-[#332D56] border border-[#71C0BB]/30 hover:bg-[#E3EEB2]/60"
       }`}
         >
           <Send className="w-4 h-4" />

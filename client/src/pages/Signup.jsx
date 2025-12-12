@@ -41,59 +41,59 @@ export default function Signup() {
     return true
   }
 
-    //handle signup
-   const handleSignUp = async (e) => {
+  //handle signup
+  const handleSignUp = async (e) => {
     e.preventDefault()
     setError('')
 
     if (!validateForm()) return
     let user;
-  if (userType === 'applicant') {
-     user = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      role: formData.role,
-      skills: formData.skills,
-      experience: formData.experience,
-      resume: formData.resume,
-    };
-  }
-  else{
-    user = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      role: formData.role,
-      company: formData.company,
-      location: formData.location,
+    if (userType === 'applicant') {
+      user = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        skills: formData.skills,
+        experience: formData.experience,
+        resume: formData.resume,
+      };
+    }
+    else {
+      user = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        company: formData.company,
+        location: formData.location,
 
-    };
-  }
+      };
+    }
 
-  try {
-    const response = await signup(user);
-    console.log("User registered successfully:", response);
-    alert("User registered successfully! Please Sign In");
-    setFormData({
-      name: '',
-      email: '',
-      password: '',
-      role: '',
-      skills: '',
-      experience: 0,
-      resume: '',
-      company: '',
-      location: '',
-    });
-    setUserType(null);
+    try {
+      const response = await signup(user);
+      console.log("User registered successfully:", response);
+      alert("User registered successfully! Please Sign In");
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        role: '',
+        skills: '',
+        experience: 0,
+        resume: '',
+        company: '',
+        location: '',
+      });
+      setUserType(null);
 
-    navigate('/login')
-  } catch (error) {
+      navigate('/login')
+    } catch (error) {
       console.error("Error registering user:", error);
-      alert( "Error registering user");
-  }
-};
+      alert("Error registering user");
+    }
+  };
 
 
   if (!userType) {
@@ -111,7 +111,7 @@ export default function Signup() {
                 setUserType('applicant')
                 setFormData(prev => ({ ...prev, role: 'applicant' }))
               }}
-              className="w-full border border-gray-300 p-6 rounded hover:border-blue-600 hover:bg-blue-50"
+              className="w-full border border-gray-300 p-6 rounded hover:border-[#71C0BB] hover:bg-[#E3EEB2]/20"
             >
               <h3 className="font-semibold text-gray-900">I'm a Job Seeker</h3>
               <p className="mt-1 text-sm text-gray-600">Find your next opportunity</p>
@@ -122,7 +122,7 @@ export default function Signup() {
                 setUserType('recruiter')
                 setFormData(prev => ({ ...prev, role: 'recruiter' }))
               }}
-              className="w-full border border-gray-300 p-6 rounded hover:border-indigo-600 hover:bg-indigo-50"
+              className="w-full border border-gray-300 p-6 rounded hover:border-[#4E6687] hover:bg-[#E3EEB2]/20"
             >
               <h3 className="font-semibold text-gray-900">Job Recruiter</h3>
               <p className="mt-1 text-sm text-gray-600">Build your dream team</p>
@@ -131,7 +131,7 @@ export default function Signup() {
 
           <p className="mt-8 text-sm text-gray-600">
             Already have an account?{' '}
-            <button onClick={() => navigate('/login')} className="font-semibold text-blue-600 hover:underline">
+            <button onClick={() => navigate('/login')} className="font-semibold text-[#71C0BB] hover:underline">
               Sign in
             </button>
           </p>
@@ -151,11 +151,11 @@ export default function Signup() {
         </button>
 
         <div className="mb-8 text-center">
-          
+
           <div className="flex items-center justify-center gap-2">
-                      <Briefcase className="h-8 w-8 text-blue-600" />
-                      <h1 className="text-2xl font-bold text-gray-900">JobConnect</h1>
-                    </div>
+            <Briefcase className="h-8 w-8 text-[#71C0BB]" />
+            <h1 className="text-2xl font-bold text-gray-900">JobConnect</h1>
+          </div>
           <p className="mt-2 text-gray-600">
             {userType === 'applicant'
               ? 'Create your job seeker account'
@@ -163,134 +163,134 @@ export default function Signup() {
           </p>
         </div>
 
-        
-          {/* Common Fields */}
-          <div>
-            <label className="block text-sm font-medium text-gray-900">Enter Your Name</label>
-            <input
-              type="text"
-              id="name"
-              className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-              required
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-900">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            />
-          </div>
+        {/* Common Fields */}
+        <div>
+          <label className="block text-sm font-medium text-gray-900">Enter Your Name</label>
+          <input
+            type="text"
+            id="name"
+            className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+            required
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+        </div>
 
-          <div>
-                <label className="block text-sm font-medium text-gray-900">Role</label>
-                <input
-                  type="text"
-                  id="role"
-                  value={formData.role}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-900">Email</label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+          />
+        </div>
 
-          {/* Applicant Fields */}
-          {userType === 'applicant' && (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-gray-900">Skills</label>
-                <input
-                  type="text"
-                  id="skills"
-                  value={formData.skills}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-900">Role</label>
+          <input
+            type="text"
+            id="role"
+            value={formData.role}
+            onChange={handleInputChange}
+            className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+          />
+        </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-900">Resume URL</label>
-                <input
-                  type="text"
-                  id="resume"
-                  value={formData.resume}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
+        {/* Applicant Fields */}
+        {userType === 'applicant' && (
+          <>
+            <div>
+              <label className="block text-sm font-medium text-gray-900">Skills</label>
+              <input
+                type="text"
+                id="skills"
+                value={formData.skills}
+                onChange={handleInputChange}
+                className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+              />
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-900">Experience</label>
-                <input
-                  type="text"
-                  id="experience"
-                  value={formData.experience}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
-            </>
-          )}
+            <div>
+              <label className="block text-sm font-medium text-gray-900">Resume URL</label>
+              <input
+                type="text"
+                id="resume"
+                value={formData.resume}
+                onChange={handleInputChange}
+                className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+              />
+            </div>
 
-          {/* Recruiter Fields */}
-          {userType === 'recruiter' && (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-gray-900">Company</label>
-                <input
-                  type="text"
-                  id="company"
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-900">Experience</label>
+              <input
+                type="text"
+                id="experience"
+                value={formData.experience}
+                onChange={handleInputChange}
+                className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+              />
+            </div>
+          </>
+        )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-900">Location</label>
-                <input
-                  type="text"
-                  id="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
-            </>
-          )}
+        {/* Recruiter Fields */}
+        {userType === 'recruiter' && (
+          <>
+            <div>
+              <label className="block text-sm font-medium text-gray-900">Company</label>
+              <input
+                type="text"
+                id="company"
+                value={formData.company}
+                onChange={handleInputChange}
+                className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#4E6687]"
+              />
+            </div>
 
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-900">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-900">Location</label>
+              <input
+                type="text"
+                id="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#4E6687]"
+              />
+            </div>
+          </>
+        )}
 
-          {/* Error Message */}
-          {error && <div className="rounded bg-red-100 p-3 text-sm text-red-700">{error}</div>}
+        {/* Password */}
+        <div>
+          <label className="block text-sm font-medium text-gray-900">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+          />
+        </div>
 
-          {/* Submit */}
-          <button
-            className=" my-4 w-full bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition"
-            onClick={handleSignUp}
-          >
-            Sign Up
-          </button>
-        
+        {/* Error Message */}
+        {error && <div className="rounded bg-red-100 p-3 text-sm text-red-700">{error}</div>}
+
+        {/* Submit */}
+        <button
+          className=" my-4 w-full bg-[#71C0BB] text-white rounded px-4 py-2 hover:bg-[#5aa8a3] transition"
+          onClick={handleSignUp}
+        >
+          Sign Up
+        </button>
+
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
-          <button onClick={() => navigate('/login')} className="font-semibold text-blue-600 hover:underline">
+          <button onClick={() => navigate('/login')} className="font-semibold text-[#71C0BB] hover:underline">
             Sign in
           </button>
         </p>

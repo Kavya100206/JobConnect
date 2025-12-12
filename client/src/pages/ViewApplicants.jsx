@@ -26,69 +26,69 @@ export default function RecruiterApplications() {
 
 
   useEffect(() => {
-  const fetchApplicants = async () => {
-    try {
-      const data = await getAllApplicants();
-      setApplicants(data);
+    const fetchApplicants = async () => {
+      try {
+        const data = await getAllApplicants();
+        setApplicants(data);
 
-      // ✅ once applicants are fetched, set jobs list
-      const uniqueJobs = Array.from(
-        new Set(
-          (data || [])
-            .map((app) => app.job?.title || "Unknown Job")
-            .filter(Boolean)
+        // ✅ once applicants are fetched, set jobs list
+        const uniqueJobs = Array.from(
+          new Set(
+            (data || [])
+              .map((app) => app.job?.title || "Unknown Job")
+              .filter(Boolean)
+          )
+        );
+        setJobs(uniqueJobs);
+      } catch (err) {
+        console.error("Error fetching applicants:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchApplicants();
+  }, [profileData]);
+
+  const filteredApplicants = applicants.filter((app) => {
+    const matchesJob = selectedJob === "all" || app.job?.title === selectedJob;
+    const matchesStatus = selectedStatus === "all" || app.status === selectedStatus;
+    return matchesJob && matchesStatus;
+  });
+
+
+
+
+  const handleAccept = async (id) => {
+    try {
+      const updated = await updateApplicationStatus(id, "Accepted");
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === id
+            ? { ...applicant, status: updated.status }   // merge instead of replace
+            : applicant
         )
       );
-      setJobs(uniqueJobs);
-    } catch (err) {
-      console.error("Error fetching applicants:", err);
-    } finally {
-      setLoading(false);
+
+    } catch (error) {
+      console.error("Error updating application status:", error);
     }
   };
-  fetchApplicants();
-}, [profileData]);
 
-const filteredApplicants = applicants.filter((app) => {
-  const matchesJob = selectedJob === "all" || app.job?.title === selectedJob;
-  const matchesStatus = selectedStatus === "all" || app.status === selectedStatus;
-  return matchesJob && matchesStatus;
-});
+  const handleReject = async (id) => {
+    try {
+      const updated = await updateApplicationStatus(id, "Rejected");
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === id
+            ? { ...applicant, status: updated.status }   // merge instead of replace
+            : applicant
+        )
+      );
+    } catch (error) {
+      console.error("Error updating application status:", error);
+    }
 
-
-
-
-const handleAccept = async (id) => {
-  try {
-    const updated = await updateApplicationStatus(id, "Accepted");
-    setApplicants((prev) =>
-  prev.map((applicant) =>
-    applicant._id === id
-      ? { ...applicant, status: updated.status }   // merge instead of replace
-      : applicant
-  )
-);
-
-  } catch (error) {
-    console.error("Error updating application status:", error);
-  }
-};
-
-const handleReject = async (id) => {
-  try {
-    const updated = await updateApplicationStatus(id, "Rejected");
-    setApplicants((prev) =>
-  prev.map((applicant) =>
-    applicant._id === id
-      ? { ...applicant, status: updated.status }   // merge instead of replace
-      : applicant
-  )
-);
-  } catch (error) {
-    console.error("Error updating application status:", error);
-  }
-  
-};
+  };
   if (loading) return <p>Loading applications...</p>;
 
   const handleLogout = () => {
@@ -217,7 +217,7 @@ const handleReject = async (id) => {
                     <div>
                       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Experience</p>
                       <span className="inline-block px-3 py-1.5 bg-primary/10 text-primary font-semibold rounded-lg text-sm">
-                        {applicant.applicant?.experience} year{applicant.applicant?.experience!== 1 ? "s" : ""}
+                        {applicant.applicant?.experience} year{applicant.applicant?.experience !== 1 ? "s" : ""}
                       </span>
                     </div>
                   </div>
@@ -229,7 +229,7 @@ const handleReject = async (id) => {
                       {applicant.applicant?.skills?.map((skill) => (
                         <span
                           key={skill}
-                          className="px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 text-sm rounded-lg font-medium hover:bg-blue-100 transition-colors"
+                          className="px-3 py-1.5 bg-[#E3EEB2] text-[#332D56] border border-[#71C0BB] text-sm rounded-lg font-medium hover:bg-[#71C0BB]/20 transition-colors"
                         >
                           {skill}
                         </span>

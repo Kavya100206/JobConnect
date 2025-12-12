@@ -1,23 +1,64 @@
 @import "tailwindcss";
 
+/* Custom Color Palette - Purple & Teal Theme */
+:root {
+  --deep-purple: #332D56;
+  --slate-blue: #4E6687;
+  --teal: #71C0BB;
+  --teal-dark: #5aa8a3;
+  --mint: #E3EEB2;
+  --mint-dark: #d4e090;
+  
+  /* Semantic color tokens for Tailwind */
+  --color-primary: var(--teal);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--slate-blue);
+  --color-accent: var(--mint);
+  --color-muted: #6b7280;
+  --color-muted-foreground: #9ca3af;
+  --color-border: #e5e7eb;
+  --color-input: #f9fafb;
+  --color-card: #ffffff;
+  --color-background: #ffffff;
+  --color-foreground: #111827;
+}
+
 /* Dark mode configuration */
 .dark {
   color-scheme: dark;
+  --deep-purple: #1a1825;
+  --slate-blue: #3d5168;
+  --teal: #71C0BB;
+  --mint: #2a2d25;
+  
+  /* Dark mode semantic tokens */
+  --color-primary: var(--teal);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--slate-blue);
+  --color-accent: var(--mint);
+  --color-muted: #6b7280;
+  --color-muted-foreground: #9ca3af;
+  --color-border: #374151;
+  --color-input: #1f2937;
+  --color-card: #111827;
+  --color-background: #0f1419;
+  --color-foreground: #f9fafb;
 }
 
-/* Custom scrollbar for dark mode */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-900;
+  background: var(--mint);
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-700 rounded-lg;
+  background: var(--teal);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-600;
+  background: var(--slate-blue);
 }

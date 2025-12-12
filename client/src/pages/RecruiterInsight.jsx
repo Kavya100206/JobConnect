@@ -12,7 +12,7 @@ import { useEffect } from "react"
 const chartConfigJobType = {
   fulltime: {
     label: "Full-time",
-    color: "#3B82F6",  // Blue-500
+    color: "#71C0BB",  // Teal
   },
   parttime: {
     label: "Part-time",
@@ -50,22 +50,28 @@ export default function RecruiterAnalytics() {
   }
 
 
-   // legend
+  // legend
   const jobTypeDistributionData = [
-    { name: "Full-time", value: data.acceptedJobTypeCounts?.fullTime || 0, color: "#3B82F6" },
+    { name: "Full-time", value: data.acceptedJobTypeCounts?.fullTime || 0, color: "#71C0BB" },
     { name: "Part-time", value: data.acceptedJobTypeCounts?.partTime || 0, color: "#10B981" },
     { name: "Contract", value: data.acceptedJobTypeCounts?.contract || 0, color: "#EF4444" },
   ]// hide types with 0 count
 
-  
-   // pieChart
+
+  // pieChart
   const jobTypePieChart = [
-    { name: "Full-time", value: data.jobTypeCOunts
-?.fullTime || 0, color: "#3B82F6" },
-    { name: "Part-time", value: data.jobTypeCOunts
-?.partTime || 0, color: "#10B981" },
-    { name: "Contract", value: data.jobTypeCOunts
-?.contract || 0, color: "#EF4444" },
+    {
+      name: "Full-time", value: data.jobTypeCOunts
+        ?.fullTime || 0, color: "#71C0BB"
+    },
+    {
+      name: "Part-time", value: data.jobTypeCOunts
+        ?.partTime || 0, color: "#10B981"
+    },
+    {
+      name: "Contract", value: data.jobTypeCOunts
+        ?.contract || 0, color: "#EF4444"
+    },
   ]
 
 
@@ -125,8 +131,8 @@ export default function RecruiterAnalytics() {
               <div className="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm text-muted-foreground font-semibold">Avg per Job</p>
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <TrendingUp className="h-5 w-5 text-blue-600" />
+                  <div className="p-2 bg-[#71C0BB]/20 rounded-lg">
+                    <TrendingUp className="h-5 w-5 text-[#71C0BB]" />
                   </div>
                 </div>
                 <p className="text-3xl font-bold text-foreground">{avgApplicantsPerJob}</p>
@@ -164,7 +170,7 @@ export default function RecruiterAnalytics() {
                       tick={{ fill: "var(--color-muted-foreground)", fontSize: 12 }}
                     />
                     <YAxis tick={{ fill: "var(--color-muted-foreground)", fontSize: 12 }} />
-                    <Bar dataKey="applicants" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="applicants" fill="#71C0BB" radius={[8, 8, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -178,18 +184,18 @@ export default function RecruiterAnalytics() {
                 <ResponsiveContainer width="100%" height={320}>
                   <PieChart>
                     <Pie
-  data={jobTypePieChart}
-  cx="50%"
-  cy="50%"
-  labelLine={false}
-  outerRadius={100}
-  innerRadius={60}
-  fill="#3B82F6"
-  dataKey="value"
-  label={({ name, percent, value }) =>
-    value > 0 ? `${name} ${(percent * 100).toFixed(0)}%` : ""
-  }
->
+                      data={jobTypePieChart}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      outerRadius={100}
+                      innerRadius={60}
+                      fill="#71C0BB"
+                      dataKey="value"
+                      label={({ name, percent, value }) =>
+                        value > 0 ? `${name} ${(percent * 100).toFixed(0)}%` : ""
+                      }
+                    >
 
                       {jobTypeDistributionData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />

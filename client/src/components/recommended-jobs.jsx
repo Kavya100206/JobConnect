@@ -23,7 +23,7 @@ export default function RecommendedJobs({
           {/* Blue vertical line */}
           <div
             className="w-1 h-6 rounded-full"
-            style={{ backgroundColor: "#2563EB" }}
+            style={{ backgroundColor: "#71C0BB" }}
           ></div>
 
           <h2 className="text-2xl font-bold text-foreground">

@@ -14,21 +14,21 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Briefcase className="h-8 w-8 text-blue-600" />
+              <Briefcase className="h-8 w-8 text-[#71C0BB]" />
               <span className="text-xl font-bold text-gray-900">JobConnect</span>
             </div>
-            
+
             {/* Desktop Navigation */}
             <div className="hidden gap-3 sm:flex">
               <button
                 onClick={() => navigate('/login')}
-                className="px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50"
+                className="px-4 py-2 border border-[#71C0BB] text-[#71C0BB] rounded hover:bg-[#E3EEB2]/20"
               >
                 Sign In
               </button>
               <button
                 onClick={() => navigate('/signup')}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className="px-4 py-2 bg-[#71C0BB] text-white rounded hover:bg-[#5aa8a3]"
               >
                 Get Started
               </button>
@@ -42,7 +42,7 @@ export default function LandingPage() {
       <section className="border-b border-gray-300 bg-gradient-to-b from-white to-gray-50 px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-            Connect with Your <span className="text-blue-600">Perfect Job</span>
+            Connect with Your <span className="text-[#71C0BB]">Perfect Job</span>
           </h1>
           <p className="mt-6 text-lg text-gray-600">
             JobConnect bridges the gap between talented professionals and innovative companies. Find your next
@@ -50,12 +50,12 @@ export default function LandingPage() {
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <button
-              className="px-6 py-3 text-white bg-blue-600 rounded hover:bg-blue-700 transition-transform hover:scale-105 flex items-center gap-2 justify-center"
+              className="px-6 py-3 text-white bg-[#71C0BB] rounded hover:bg-[#5aa8a3] transition-transform hover:scale-105 flex items-center gap-2 justify-center"
               onClick={() => navigate('/signup')}
             >
               Start Your Journey <span aria-hidden="true">→</span>
             </button>
-            <button className="px-6 py-3 border border-blue-600 rounded text-blue-600 hover:bg-blue-50 transition-transform hover:scale-105">
+            <button className="px-6 py-3 border border-[#71C0BB] rounded text-[#71C0BB] hover:bg-[#E3EEB2]/20 transition-transform hover:scale-105">
               Learn More
             </button>
           </div>
@@ -73,8 +73,8 @@ export default function LandingPage() {
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {/* Feature 1 */}
             <div className="border rounded p-8 bg-white shadow hover:shadow-lg transition-shadow duration-300">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 mb-4">
-                <div className="h-6 w-6 bg-blue-600 rounded-full"></div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#71C0BB]/20 mb-4">
+                <div className="h-6 w-6 bg-[#71C0BB] rounded-full"></div>
               </div>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">Curated Opportunities</h3>
               <p className="mt-2 text-gray-600">
@@ -84,8 +84,8 @@ export default function LandingPage() {
 
             {/* Feature 2 */}
             <div className="border rounded p-8 bg-white shadow hover:shadow-lg transition-shadow duration-300">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-100 mb-4">
-                <div className="h-6 w-6 bg-indigo-600 rounded-full"></div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#4E6687]/20 mb-4">
+                <div className="h-6 w-6 bg-[#4E6687] rounded-full"></div>
               </div>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">Direct Connections</h3>
               <p className="mt-2 text-gray-600">
@@ -95,8 +95,8 @@ export default function LandingPage() {
 
             {/* Feature 3 */}
             <div className="border rounded p-8 bg-white shadow hover:shadow-lg transition-shadow duration-300">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 mb-4">
-                <div className="h-6 w-6 bg-blue-600 rounded-full"></div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#E3EEB2]/50 mb-4">
+                <div className="h-6 w-6 bg-[#71C0BB] rounded-full"></div>
               </div>
               <h3 className="mt-4 text-lg font-semibold text-gray-900">Quick Matching</h3>
               <p className="mt-2 text-gray-600">
@@ -116,7 +116,7 @@ export default function LandingPage() {
           </p>
           <button
             onClick={() => navigate('/signup')}
-            className="mt-8 px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition-transform hover:scale-105"
+            className="mt-8 px-6 py-3 bg-[#71C0BB] text-white rounded hover:bg-[#5aa8a3] transition-transform hover:scale-105"
           >
             Sign Up Now →
           </button>

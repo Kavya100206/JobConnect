@@ -11,7 +11,7 @@ import ThemeToggle from "./theme-toggle";
 export default function DashboardHeader({ onLogout }) {
   const user = useSelector((state) => state.user.userData);
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-md transition-colors">
+    <header className="sticky top-0 z-50 border-b border-[#71C0BB] dark:border-[#4E6687] bg-[#332D56] dark:bg-[#1a1825] shadow-md transition-colors">
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         <div className="flex items-center gap-4">
           <div>
@@ -21,18 +21,18 @@ export default function DashboardHeader({ onLogout }) {
               }
             >
               <div className="flex items-center justify-center gap-2">
-                <Briefcase className="h-8 w-8 text-blue-600 dark:text-blue-500" />
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">JobConnect</h1>
+                <Briefcase className="h-8 w-8 text-[#71C0BB] dark:text-[#71C0BB]" />
+                <h1 className="text-2xl font-bold text-[#E3EEB2] dark:text-[#E3EEB2]">JobConnect</h1>
               </div>
             </Link>
             {/* <p className="text-xs text-gray-500 capitalize">{userRole} Dashboard</p> */}
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6 font-medium text-gray-700 dark:text-gray-300">
+        <nav className="hidden md:flex items-center gap-6 font-medium text-[#E3EEB2] dark:text-[#E3EEB2]">
           <span className="text-sm">
             Hi,{" "}
-            <span className="font-semibold text-blue-600 dark:text-blue-400">
+            <span className="font-semibold text-[#71C0BB] dark:text-[#71C0BB]">
               {user?.name || "Guest"}
             </span>
           </span>
@@ -43,7 +43,7 @@ export default function DashboardHeader({ onLogout }) {
                 ? "/ApplicantDashboard"
                 : "/RecruiterDashboard"
             }
-            className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="text-sm hover:text-[#71C0BB] dark:hover:text-[#71C0BB] transition-colors"
           >
             Home
           </Link>
@@ -53,7 +53,7 @@ export default function DashboardHeader({ onLogout }) {
                 ? "/ApplicantProfile"
                 : "/RecruiterProfile"
             }
-            className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="text-sm hover:text-[#71C0BB] dark:hover:text-[#71C0BB] transition-colors"
           >
             Profile
           </Link>
@@ -63,7 +63,7 @@ export default function DashboardHeader({ onLogout }) {
                 ? "/ApplicantStats"
                 : "/RecruiterStats"
             }
-            className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="text-sm hover:text-[#71C0BB] dark:hover:text-[#71C0BB] transition-colors"
           >
             Stats
           </Link>
@@ -83,8 +83,8 @@ export default function DashboardHeader({ onLogout }) {
           </button>
         </nav>
 
-        <button className="md:hidden p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors">
-          <User className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+        <button className="md:hidden p-2 hover:bg-[#4E6687] dark:hover:bg-[#3d5168] rounded-lg transition-colors">
+          <User className="h-5 w-5 text-[#E3EEB2] dark:text-[#E3EEB2]" />
         </button>
       </div>
     </header>
