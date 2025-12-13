@@ -315,16 +315,3 @@ JobConnect/
 | PUT | `/api/notifications/read-all` | Mark all as read |
 
 ---
-
-## 🎨 Color Palette
-
-The application uses a sophisticated purple & teal color scheme:
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Deep Purple | `#332D56` | Headers, footers, primary backgrounds |
-| Slate Blue | `#4E6687` | Secondary elements, recruiter accents |
-| Teal | `#71C0BB` | Buttons, links, interactive elements |
-| Mint | `#E3EEB2` | Light backgrounds, highlights |
-
----
