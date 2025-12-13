@@ -3,10 +3,6 @@
 
 > A modern, full-stack job recruitment platform connecting talented professionals with their perfect opportunities.
 
-[![MERN Stack](https://img.shields.io/badge/Stack-MERN-green)](https://www.mongodb.com/mern-stack)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-
 <div align="center">
   <p><strong>Built with the MERN stack • Modern UI/UX • Real-time Notifications</strong></p>
 </div>
@@ -33,13 +29,13 @@
 
 ### Key Highlights
 
-- 🎨 **Beautiful UI**: Modern purple & teal color scheme with dark mode support
-- 🔔 **Real-time Notifications**: In-app bell notifications + email alerts
-- 👥 **Dual User Roles**: Separate dashboards for applicants and recruiters
-- 📧 **Email Integration**: Automated email notifications via Nodemailer
-- 🌙 **Dark Mode**: Toggle between light and dark themes
-- 🔐 **Secure Authentication**: JWT-based auth with HTTP-only cookies
-- 📱 **Responsive Design**: Works seamlessly on all devices
+-  **Beautiful UI**: Modern purple & teal color scheme with dark mode support
+-  **Real-time Notifications**: In-app bell notifications + email alerts
+-  **Dual User Roles**: Separate dashboards for applicants and recruiters
+-  **Email Integration**: Automated email notifications via Nodemailer
+-  **Dark Mode**: Toggle between light and dark themes
+-  **Secure Authentication**: JWT-based auth with HTTP-only cookies
+-  **Responsive Design**: Works seamlessly on all devices
 
 ---
 
@@ -48,30 +44,30 @@
 ### For Job Seekers (Applicants)
 
 #### Job Discovery & Application
-- 🔍 **Smart Job Search**: Browse curated job listings with advanced filters
-- 📝 **Quick Apply**: One-click application process
-- 💾 **Save Jobs**: Bookmark interesting positions for later
-- 📊 **Application Tracking**: Monitor application status (Pending/Accepted/Rejected)
+-  **Smart Job Search**: Browse curated job listings with advanced filters
+-  **Quick Apply**: One-click application process
+-  **Save Jobs**: Bookmark interesting positions for later
+-  **Application Tracking**: Monitor application status (Pending/Accepted/Rejected)
 
 #### Profile Management
-- 👤 **Profile Customization**: Upload profile pictures, manage skills, experience, resume
-- 📈 **Application Stats**: Track total applications, success rate, and pending reviews
-- 🔔 **Notification Center**: Real-time bell notifications for application status updates
-- 📧 **Email Alerts**: Receive acceptance/rejection emails automatically
+-  **Profile Customization**: Upload profile pictures, manage skills, experience, resume
+-  **Application Stats**: Track total applications, success rate, and pending reviews
+-  **Notification Center**: Real-time bell notifications for application status updates
+-  **Email Alerts**: Receive acceptance/rejection emails automatically
 
 ### For Recruiters
 
 #### Job Management
-- ➕ **Post Jobs**: Create detailed job listings with skills, experience, salary, location
-- ✏️ **Edit/Delete**: Full control over job postings
-- 👀 **View Applicants**: Browse all candidates who applied for each position
-- ✅ **Applicant Actions**: Accept or reject applicants with one click
+-  **Post Jobs**: Create detailed job listings with skills, experience, salary, location
+-  **Edit/Delete**: Full control over job postings
+-  **View Applicants**: Browse all candidates who applied for each position
+-  **Applicant Actions**: Accept or reject applicants with one click
 
 #### Recruitment Dashboard
-- 📊 **Insights & Analytics**: Track total jobs, applicants, acceptance/rejection rates
-- 🔔 **Application Notifications**: Get notified when candidates apply
-- 📧 **Email Notifications**: Automatic emails when new applicants arrive
-- 🏢 **Company Profile**: Manage company information and recruiter details
+-  **Insights & Analytics**: Track total jobs, applicants, acceptance/rejection rates
+-  **Application Notifications**: Get notified when candidates apply
+-  **Email Notifications**: Automatic emails when new applicants arrive
+-  **Company Profile**: Manage company information and recruiter details
 
 ### System-Wide Features
 
@@ -84,26 +80,21 @@
 - 👁️ **Mark as Read**: Single or bulk mark-as-read functionality
 
 #### Email Notifications
-- 📧 **Recruiter Emails**: Detailed applicant info when someone applies
-- 📧 **Applicant Emails**: Professional acceptance/rejection templates
-- 🎨 **HTML Templates**: Branded, beautiful email designs
-- ⚡ **Non-blocking**: Email sending doesn't slow down the app
+-  **Recruiter Emails**: Detailed applicant info when someone applies
+-  **Applicant Emails**: Professional acceptance/rejection templates
+-  **HTML Templates**: Branded, beautiful email designs
+-  **Non-blocking**: Email sending doesn't slow down the app
 
 #### Dark Mode
-- 🌙 **Theme Toggle**: Moon/Sun icon in header to switch themes
-- 💾 **Persistence**: Theme saved in localStorage across sessions
-- 🎨 **Custom Colors**: Beautiful purple/teal palette in both modes
-- 🔄 **Smooth Transitions**: Seamless color transitions
+-  **Theme Toggle**: Moon/Sun icon in header to switch themes
+-  **Persistence**: Theme saved in localStorage across sessions
+-  **Custom Colors**: Beautiful purple/teal palette in both modes
+-  **Smooth Transitions**: Seamless color transitions
 
 #### Modern UI/UX
-- 🎨 **Custom Color Palette**:
-  - Deep Purple (#332D56) - Headers, primary elements
-  - Slate Blue (#4E6687) - Secondary actions
-  - Teal (#71C0BB) - Interactive elements, links
-  - Mint (#E3EEB2) - Light backgrounds, accents
-- 📱 **Fully Responsive**: Mobile, tablet, and desktop optimized
-- ⚡ **Smooth Animations**: Hover effects, transitions, loading states
-- 🎯 **Intuitive Navigation**: Clear user flows for all actions
+-  **Fully Responsive**: Mobile, tablet, and desktop optimized
+-  **Smooth Animations**: Hover effects, transitions, loading states
+-  **Intuitive Navigation**: Clear user flows for all actions
 
 ---
 
@@ -148,7 +139,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/JobConnect.git
+   git clone https://github.com//Kavya100206/JobConnect.git
    cd JobConnect
    ```
 
@@ -339,41 +330,3 @@ The application uses a sophisticated purple & teal color scheme:
 | Mint | `#E3EEB2` | Light backgrounds, highlights |
 
 ---
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 👨‍💻 Author
-
-**Kavya**
-- GitHub: [@Kavya100206](https://github.com/Kavya100206)
-
----
-
-## 🙏 Acknowledgments
-
-- Color palette inspiration from [Color Hunt](https://colorhunt.co/)
-- Icons from [Lucide React](https://lucide.dev/)
-- UI inspiration from modern job platforms
-
----
-
-<div align="center">
-  <p>Made with ❤️ by Kavya</p>
-  <p>⭐ Star this repo if you find it helpful!</p>
-</div>
