@@ -18,8 +18,6 @@
 - [Environment Variables](#environment-variables)
 - [Project Structure](#project-structure)
 - [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
