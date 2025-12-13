@@ -19,8 +19,9 @@ export default function JobTabs({ activeTab, setActiveTab, counts }) {
             className={`relative px-4 py-3 font-medium whitespace-nowrap transition-colors
               ${
                 activeTab === tab.id
-                  ? "text-[#332D56]" // active purple text
-                  : "text-gray-500 hover:text-gray-700"
+  ? "text-black dark:text-[#E3EEB2]"
+  : "text-[#71C0BB] hover:text-[#71C0BB]"
+
               }`}
           >
             {tab.label} ({tab.count})

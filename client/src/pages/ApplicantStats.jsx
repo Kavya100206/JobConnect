@@ -102,7 +102,7 @@ export default function ApplicantStats() {
                 {
                   label: "Total",
                   value: stats.total,
-                  color: "bg-[#E3EEB2]/40 text-[#332D56]",
+                  color: "bg-[#E3EEB2]/80 text-[#332D56]",
                 },
                 {
                   label: "Pending",

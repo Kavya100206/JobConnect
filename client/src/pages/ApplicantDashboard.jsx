@@ -328,7 +328,7 @@ export default function JobDiscovery() {
                         key={page}
                         onClick={() => setCurrentPage(page)}
                         className={`px-3 py-2 rounded-lg transition-colors ${currentPage === page
-                            ? "bg-primary text-primary-foreground"
+                            ? "bg-primary text-primary-foreground bg-[#71C0BB]"
                             : "border border-border text-foreground hover:bg-muted"
                           }`}
                       >

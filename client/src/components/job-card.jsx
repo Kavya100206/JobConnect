@@ -124,7 +124,8 @@ export default function JobCard({
       ${
         isApplied
           ? "bg-[#332D56] text-white shadow-md shadow-[#71C0BB]/20"
-          : "bg-[#E3EEB2]/40 text-[#332D56] border border-[#71C0BB]/30 hover:bg-[#E3EEB2]/60"
+          : "bg-[#71C0BB] text-[#332D56] hover:bg-[#5bb3ad] shadow-md"
+
       }`}
         >
           <Send className="w-4 h-4" />

@@ -229,7 +229,7 @@ export default function RecruiterApplications() {
                       {applicant.applicant?.skills?.map((skill) => (
                         <span
                           key={skill}
-                          className="px-3 py-1.5 bg-[#E3EEB2] text-[#332D56] border border-[#71C0BB] text-sm rounded-lg font-medium hover:bg-[#71C0BB]/20 transition-colors"
+                          className="px-3 py-1.5  text-[#332D56] border border-[#71C0BB] text-sm rounded-lg font-medium hover:bg-[#71C0BB]/20 transition-colors"
                         >
                           {skill}
                         </span>

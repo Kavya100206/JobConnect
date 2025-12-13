@@ -114,12 +114,15 @@ export default function ApplicantProfile() {
 
   return (
     <div className="flex h-screen bg-gray-50">
+
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader onLogout={handleLogout} />
 
         <main className="flex-1 overflow-y-auto">
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-[#E3EEB2] via-[#71C0BB]/20 to-[#E3EEB2] border-b border-gray-300/50">
+          <div className="bg-[#EFEDE7] border-b border-gray-300/50">
+
+
             <div className="max-w-4xl mx-auto px-6 py-12">
               <div className="flex items-end justify-between gap-6">
                 <div className="flex items-end gap-6">
@@ -217,7 +220,7 @@ export default function ApplicantProfile() {
 
             {/* Skills */}
             <section className="bg-white border border-gray-300 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+              <h3 className="text-xl font-semibold text-gray-900  mb-6 flex items-center gap-2">
                 <div className="w-1 h-6 bg-gradient-to-b from-[#332D56] to-[#4E6687] rounded-full"></div>
                 Skills & Expertise
               </h3>
@@ -225,7 +228,10 @@ export default function ApplicantProfile() {
                 {editedProfile.skills?.map((skill) => (
                   <div
                     key={skill}
-                    className="group relative px-4 py-2 bg-gradient-to-r from-[#E3EEB2]/50 to-[#71C0BB]/30 border border-[#71C0BB]/40 text-[#332D56] rounded-full text-sm font-medium"
+                    className="group relative px-4 py-2 rounded-full text-sm font-medium 
+           bg-[#EAF3F2] text-[#332D56]
+          "
+
                   >
                     {skill}
                     {isEditing && (
@@ -257,7 +263,7 @@ export default function ApplicantProfile() {
                   />
                   <button
                     onClick={addSkill}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#4E6687] to-[#71C0BB] text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg- text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
                   >
                     <Plus className="h-4 w-4" /> Add
                   </button>
@@ -271,9 +277,9 @@ export default function ApplicantProfile() {
                 <div className="w-1 h-6 bg-gradient-to-b from-[#332D56] to-[#4E6687] rounded-full"></div>
                 Resume
               </h3>
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#E3EEB2]/30 to-[#71C0BB]/20 border border-[#71C0BB]/30 rounded-lg">
+              <div className="flex items-center justify-between p-4  rounded-lg">
                 <div className="flex items-center gap-3 w-full">
-                  <div className="p-2 bg-[#E3EEB2]/50 rounded-lg">
+                  <div className="p-2  rounded-lg">
                     <FileText className="h-5 w-5 text-[#332D56]" />
                   </div>
                   {isEditing ? (
@@ -300,7 +306,7 @@ export default function ApplicantProfile() {
               <div className="flex gap-4 pt-6">
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#4E6687] to-[#71C0BB] text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
+                  className="flex items-center gap-2 px-6 py-3 bg-[#71C0BB] text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
                 >
                   <Save className="h-5 w-5" /> Save Changes
                 </button>
@@ -320,4 +326,5 @@ export default function ApplicantProfile() {
       </div>
     </div>
   )
+
 }

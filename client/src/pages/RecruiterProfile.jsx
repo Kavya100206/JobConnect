@@ -107,7 +107,7 @@ export default function RecruiterProfile() {
 
         <main className="flex-1 overflow-y-auto">
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-[#E3EEB2] via-[#71C0BB]/20 to-[#E3EEB2] border-b border-gray-300/50">
+          <div className="bg-[#EFEDE7] border-b border-gray-300/50">
             <div className="max-w-4xl mx-auto px-6 py-12">
               <div className="flex items-end justify-between gap-6">
                 <div className="flex items-end gap-6">
@@ -244,7 +244,7 @@ export default function RecruiterProfile() {
               <div className="flex gap-4 pt-6">
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#4E6687] to-[#71C0BB] text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
+                  className="flex items-center gap-2 px-6 py-3 bg-[#71C0BB] text-white rounded-lg hover:shadow-lg hover:scale-105 transition duration-200 font-medium"
                 >
                   <Save className="h-5 w-5" /> Save Changes
                 </button>

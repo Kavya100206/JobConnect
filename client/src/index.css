@@ -46,12 +46,14 @@
 }
 
 /* Custom scrollbar */
+/* Scrollbar size */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
+/* LIGHT MODE */
 ::-webkit-scrollbar-track {
-  background: var(--mint);
+  background: #ffffff; /* white */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -61,4 +63,17 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--slate-blue);
+}
+
+/* DARK MODE */
+.dark ::-webkit-scrollbar-track {
+  background: #000000; /* black */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4E6687;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #71C0BB;
 }
