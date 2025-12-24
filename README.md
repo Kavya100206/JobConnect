@@ -1,5 +1,5 @@
 
-# JobConnect 🚀
+# JobConnect 
 
 > A modern, full-stack job recruitment platform connecting talented professionals with their perfect opportunities.
 
@@ -9,7 +9,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -21,7 +21,7 @@
 
 ---
 
-## 🎯 Overview
+## Overview
 
 **JobConnect** is a comprehensive recruitment platform designed to streamline the hiring process. It bridges the gap between job seekers and recruiters with an intuitive interface, real-time notifications, and powerful matching capabilities.
 
@@ -37,7 +37,7 @@
 
 ---
 
-## ✨ Features
+## Features
 
 ### For Job Seekers (Applicants)
 
@@ -70,12 +70,12 @@
 ### System-Wide Features
 
 #### Notification System
-- 🔔 **In-App Bell Icon**: Dropdown panel showing recent notifications
-- 🔴 **Unread Badge**: Visual indicator for new notifications
-- 📨 **Application Received**: Recruiters get notified when applicants apply
-- ✅ **Status Updates**: Applicants get notified of acceptance/rejection
-- ♻️ **Auto-Refresh**: Notifications refresh every 30 seconds
-- 👁️ **Mark as Read**: Single or bulk mark-as-read functionality
+-  **In-App Bell Icon**: Dropdown panel showing recent notifications
+-  **Unread Badge**: Visual indicator for new notifications
+-  **Application Received**: Recruiters get notified when applicants apply
+-  **Status Updates**: Applicants get notified of acceptance/rejection
+-  **Auto-Refresh**: Notifications refresh every 30 seconds
+-  **Mark as Read**: Single or bulk mark-as-read functionality
 
 #### Email Notifications
 -  **Recruiter Emails**: Detailed applicant info when someone applies
@@ -96,7 +96,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React** - UI library
@@ -125,7 +125,7 @@
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -175,7 +175,7 @@
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 ### Backend (.env in `/server`)
 
@@ -219,7 +219,7 @@ VITE_API_URL=http://localhost:8081
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 JobConnect/
@@ -275,7 +275,7 @@ JobConnect/
 
 ---
 
-## 📡 API Documentation
+## API Documentation
 
 ### Authentication
 
