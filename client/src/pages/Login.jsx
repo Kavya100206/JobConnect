@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Briefcase, Eye, EyeOff } from "lucide-react";
+import { Briefcase, Eye, EyeOff, Loader2 } from "lucide-react";
 import { login } from "../apiCalls/authCalls.js";
 import { setProfileData, setUserData } from "../redux/userSlice.js";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ export default function Login() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
@@ -42,6 +43,8 @@ export default function Login() {
       email: formData.email,
       password: formData.password,
     };
+
+    setIsLoading(true); // Start loading animation
 
     try {
       const response = await login(user);
@@ -90,11 +93,26 @@ export default function Login() {
     } catch (error) {
       console.error("Error signing in user:", error);
       alert("Error signing in user");
+    } finally {
+      setIsLoading(false); // Stop loading animation
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg p-8 shadow-2xl flex flex-col items-center gap-4">
+            <Loader2 className="h-12 w-12 text-[#71C0BB] animate-spin" />
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900">Signing in...</h3>
+              <p className="text-sm text-gray-600 mt-1">Please wait a moment</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
@@ -117,6 +135,7 @@ export default function Login() {
               value={formData.email}
               onChange={handleInputChange}
               className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+              disabled={isLoading}
             />
           </div>
           {/* Password with toggle */}
@@ -129,6 +148,7 @@ export default function Login() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="text-xs text-[#71C0BB] hover:underline"
+                disabled={isLoading}
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -140,11 +160,13 @@ export default function Login() {
                 value={formData.password}
                 onChange={handleInputChange}
                 className="pr-10 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#71C0BB]"
+                disabled={isLoading}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                disabled={isLoading}
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -163,10 +185,18 @@ export default function Login() {
           {/* Submit button */}
           <button
             type="submit"
-            className="my-4 w-full bg-[#71C0BB] text-white rounded px-4 py-2 hover:bg-[#5aa8a3] transition"
+            className="my-4 w-full bg-[#71C0BB] text-white rounded px-4 py-2 hover:bg-[#5aa8a3] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             onClick={handlelogin}
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Signing in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
           {/* Divider */}
           <div className="my-6 flex items-center gap-3">
@@ -180,6 +210,7 @@ export default function Login() {
             <button
               onClick={() => navigate("/signup")}
               className="font-semibold text-[#71C0BB] hover:underline"
+              disabled={isLoading}
             >
               Sign up
             </button>
