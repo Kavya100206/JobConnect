@@ -16,7 +16,10 @@ const port = process.env.PORT || 8081;
 connectDB();
 
 app.use(cors({
-    origin: ["https://job-connect-ten-tau.vercel.app", "http://localhost:5173"], // frontend url
+    origin: [
+        "https://jobconnect-1-7ob1.onrender.com",
+        "http://localhost:5173"
+    ], // frontend url
     credentials: true, //allow cookies to be sent
 }));
 app.use(express.json());
