@@ -17,7 +17,7 @@ connectDB();
 
 app.use(cors({
     origin: [
-        "https://jobconnect-1-7ob1.onrender.com",
+        "https://job-connect-tau.vercel.app",
         "http://localhost:5173"
     ], // frontend url
     credentials: true, //allow cookies to be sent
